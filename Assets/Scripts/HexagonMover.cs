@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class HexagonMover : MonoBehaviour
 {
@@ -11,23 +12,47 @@ public class HexagonMover : MonoBehaviour
     private bool isMoving = false;
     
     private Queue<Vector3> moveCommands = new Queue<Vector3>();
-    public Button redPatternMoveButton;
-    public Button greenPatternMoveButton;
-    public Button bluePatternMoveButton;
+    
+    public Button enqueuePatternButton;
+    public Button enqueueSecondPatternButton;
+    public GameObject startPatternSprite;
+    private bool isMouseDownOnStartPattern = false;
+
+    private Queue<Vector3> moveQueue = new Queue<Vector3>();
     
     private void Start()
     {
-        redPatternMoveButton.onClick.AddListener(EnqueueRedMoves);
-        greenPatternMoveButton.onClick.AddListener(EnqueueGreenPatternMoves); 
-        bluePatternMoveButton.onClick.AddListener(EnqueueBluePatternMoves); 
+        enqueuePatternButton.onClick.AddListener(EnqueueMoves);
+        enqueueSecondPatternButton.onClick.AddListener(EnqueueSecondPatternMoves);
     }
-    
+
     private void Update()
     {
         if (isMoving)
         {
             CaldronManager.Instance.spiral.transform.Rotate(Vector3.forward * 60 * Time.deltaTime);
             return;
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Collider2D hitCollider = Physics2D.OverlapPoint(mousePosition);
+
+            if (hitCollider != null && hitCollider.gameObject == startPatternSprite.gameObject)
+            {
+                isMouseDownOnStartPattern = true;
+                StartPatternMoves();
+            }
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (isMouseDownOnStartPattern)
+            {
+                isMouseDownOnStartPattern = false;
+                StopPatternMoves();
+            }
         }
 
         if (moveCommands.Count > 0)
@@ -138,48 +163,79 @@ public class HexagonMover : MonoBehaviour
         }
     }
     
-    public void EnqueueRedMoves()
+    public void EnqueueMoves()
     {
         if (!isMoving)
         {
-            Vector3[] firstPatternDirections = {
-                new Vector3(-1, 1, 0), // Left-Up
-                new Vector3(1, 1, 0),  // Right-Up
+            Vector3[] patternDirections = {
+                new Vector3(-1, 1, 0),  // Left-Up
+                new Vector3(1, 1, 0),   // Right-Up
                 new Vector3(1, -1, 0),  // Right-Down
-                new Vector3(0, 1, 0),  // Up
-                new Vector3(-1, 1, 0)  // Left-Up
+                new Vector3(0, 1, 0),   // Up
+                new Vector3(-1, 1, 0)   // Left-Up
             };
 
-            StartCoroutine(ExecutePatternMoves(firstPatternDirections));
+            EnqueueDirections(patternDirections);
         }
     }
     
-    public void EnqueueGreenPatternMoves()
+    public void EnqueueSecondPatternMoves()
     {
         if (!isMoving)
         {
             Vector3[] secondPatternDirections = {
-                new Vector3(1, -1, 0), // Right-Down
-                new Vector3(1, 1, 0),  // Right-Up
-                new Vector3(0, -1, 0)  // Down
+                new Vector3(1, -1, 0),  // Right-Down
+                new Vector3(1, 1, 0),   // Right-Up
+                new Vector3(0, -1, 0)   // Down
             };
 
-            StartCoroutine(ExecutePatternMoves(secondPatternDirections));
+            EnqueueDirections(secondPatternDirections);
         }
     }
     
-    public void EnqueueBluePatternMoves()
+    private void EnqueueDirections(Vector3[] directions)
     {
-        if (!isMoving)
+        for (int i = 0; i < directions.Length; i++)
         {
-            Vector3[] thirdPatternDirections = {
-                new Vector3(0, -1, 0), // Down
-                new Vector3(0, -1, 0),  // Down
-                new Vector3(-1, 1, 0),  // Left-Up
-                new Vector3(-1, 1, 0)  // Left-Up
-            };
+            moveQueue.Enqueue(directions[i]);
+        }
+        PrintMoveQueue();
+    }
 
-            StartCoroutine(ExecutePatternMoves(thirdPatternDirections));
+    public void StartPatternMoves()
+    {
+        if (!isMoving && moveQueue.Count > 0)
+        {
+            StartCoroutine(ExecuteMoveQueue());
         }
     }
+
+    public void StopPatternMoves()
+    {
+        StopCoroutine(ExecuteMoveQueue());
+    }
+
+    private IEnumerator ExecuteMoveQueue()
+    {
+        isMoving = true;
+
+        while (moveQueue.Count > 0)
+        {
+            Vector3 direction = moveQueue.Dequeue();
+            StartCoroutine(MoveToNextHexagon(direction));
+            yield return new WaitForSeconds(moveDuration);
+        }
+
+        isMoving = false;
+    }
+
+    private void PrintMoveQueue()
+    {
+        Debug.Log("Move Queue:");
+        foreach (Vector3 direction in moveQueue)
+        {
+            Debug.Log(direction);
+        }
+    }
+
 }

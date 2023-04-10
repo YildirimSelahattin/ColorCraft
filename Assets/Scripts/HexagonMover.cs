@@ -23,8 +23,10 @@ public class HexagonMover : MonoBehaviour
         {
             Vector3 direction = new Vector3(horizontal, vertical, 0f).normalized;
             StartCoroutine(MoveToNextHexagon(direction));
+            PrintCurrentHexagonColor();
         }
     }
+
 
     private IEnumerator MoveToNextHexagon(Vector3 direction)
     {
@@ -49,20 +51,52 @@ public class HexagonMover : MonoBehaviour
 
     private Vector3 GetHexagonOffset(Vector3 direction)
     {
-        float q = Mathf.RoundToInt((2 * direction.x - direction.y) / 3);
-        float r = Mathf.RoundToInt((2 * direction.y - direction.x) / 3);
+        Vector3 offset = Vector3.zero;
 
-        float x = colorWheelController.hexagonSize * (1.5f * q);
-        float y = colorWheelController.hexagonSize * (Mathf.Sqrt(3) * (r + q / 2));
-
-        Vector3 offset = new Vector3(x, y, 0);
-
-        // Adjust the offset to align with the hexagon center
-        if (Mathf.Abs(q) % 2 != 0 && Mathf.Abs(r) % 2 != 0)
+        if (direction.y > 0) // Up
         {
-            offset += (direction.y > 0 ? -1 : 1) * colorWheelController.hexagonSize * new Vector3(0.5f, Mathf.Sqrt(3) / 2, 0);
+            offset = new Vector3(0f, 0.55f, 0f);
+        }
+        else if (direction.y < 0) // Down
+        {
+            offset = new Vector3(0f, -0.55f, 0f);
+        }
+        else if (direction.x > 0) // Right
+        {
+            if (direction.y > -0.5f) // Right-Up
+            {
+                offset = new Vector3(0.475f, 0.275f, 0f);
+            }
+            else // Right-Down
+            {
+                offset = new Vector3(0.475f, -0.275f, 0f);
+            }
+        }
+        else if (direction.x < 0) // Left
+        {
+            if (direction.y > -0.5f) // Left-Up
+            {
+                offset = new Vector3(-0.475f, 0.275f, 0f);
+            }
+            else // Left-Down
+            {
+                offset = new Vector3(-0.475f, -0.275f, 0f);
+            }
         }
 
         return offset;
+    }
+    
+    private void PrintCurrentHexagonColor()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero);
+        if (hit.collider != null)
+        {
+            Hexagon hexagon = hit.collider.GetComponent<Hexagon>();
+            if (hexagon != null)
+            {
+                Debug.Log("Current hexagon color: " + hexagon.color);
+            }
+        }
     }
 }

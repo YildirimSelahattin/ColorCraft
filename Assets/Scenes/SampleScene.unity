@@ -1352,8 +1352,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cd3b64536499ef44859c10abb407dc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDuration: 2
-  colorWheelController: {fileID: 2051250301}
+  moveDuration: 0.25
+  colorWheelController: {fileID: 0}
 --- !u!1 &2051250297
 GameObject:
   m_ObjectHideFlags: 0

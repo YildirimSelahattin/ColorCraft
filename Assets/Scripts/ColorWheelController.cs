@@ -1,0 +1,66 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ColorWheelController : MonoBehaviour
+{
+    public GameObject hexagonPrefab;
+    public int numberOfRings = 6;
+    public float hexagonSize = 1f;
+
+    private void Start()
+    {
+        CreateColorWheel();
+    }
+
+    private void CreateColorWheel()
+    {
+        for (int ring = 0; ring < numberOfRings; ring++)
+        {
+            int hexagonsInRing = ring == 0 ? 1 : ring * 6;
+
+            for (int i = 0; i < hexagonsInRing; i++)
+            {
+                GameObject hexagon = Instantiate(hexagonPrefab);
+                hexagon.transform.SetParent(transform);
+                hexagon.transform.localPosition = CalculateHexagonPosition(ring, i);
+                hexagon.transform.localScale = Vector3.one * hexagonSize;
+
+                Color color = CalculateHexagonColor(ring, i);
+                hexagon.GetComponent<Hexagon>().SetColor(color);
+            }
+        }
+    }
+
+    private Vector3 CalculateHexagonPosition(int ring, int index)
+    {
+        if (ring == 0)
+        {
+            return Vector3.zero;
+        }
+
+        int hexagonsInRing = ring * 6;
+        int segment = index / ring;
+        int positionInSegment = index % ring;
+
+        Vector3 cornerPosition = HexMetrics.corners[segment] * ring;
+        Vector3 offset = (HexMetrics.corners[segment + 1] - HexMetrics.corners[segment]) * positionInSegment;
+
+        return cornerPosition + offset;
+    }
+
+    
+    private Color CalculateHexagonColor(int ring, int index)
+    {
+        if (ring == 0)
+        {
+            return Color.HSVToRGB(0f, 0f, 1f);
+        }
+
+        float hue = (float)(index % (ring * 6)) / (ring * 6);
+        float saturation = (float)ring / numberOfRings;
+        float value = 1f;
+
+        return Color.HSVToRGB(hue, saturation, value);
+    }
+}

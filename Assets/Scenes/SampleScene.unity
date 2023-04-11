@@ -1083,7 +1083,6 @@ GameObject:
   - component: {fileID: 824544083}
   - component: {fileID: 824544085}
   - component: {fileID: 824544087}
-  - component: {fileID: 824544088}
   m_Layer: 0
   m_Name: Kazan
   m_TagString: Untagged
@@ -1199,51 +1198,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 7, y: 5.42}
   m_EdgeRadius: 0
---- !u!114 &824544088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 824544082}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1688598820}
-          m_TargetAssemblyTypeName: HexagonMover, Assembly-CSharp
-          m_MethodName: StartPatternMoves
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 3
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1688598820}
-          m_TargetAssemblyTypeName: HexagonMover, Assembly-CSharp
-          m_MethodName: StopPatternMoves
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!1 &840885274
 GameObject:
   m_ObjectHideFlags: 0
@@ -1426,7 +1380,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveDuration: 0.25
-  colorWheelController: {fileID: 2051250301}
   enqueuePatternButton: {fileID: 309953651}
   enqueueSecondPatternButton: {fileID: 554759322}
   startPatternSprite: {fileID: 824544082}

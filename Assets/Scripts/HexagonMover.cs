@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class HexagonMover : MonoBehaviour
 {
-    [SerializeField] private float moveDuration = 0.25f;
+    [SerializeField] private float moveDuration = 20f;
     [SerializeField] private Button enqueuePatternButton;
     [SerializeField] private Button enqueueSecondPatternButton;
     [SerializeField] private GameObject startPatternSprite;
@@ -18,6 +18,8 @@ public class HexagonMover : MonoBehaviour
     
     private Queue<Vector3> moveQueue = new Queue<Vector3>();
     private int moveQueueIndex = 0;
+    
+    [SerializeField] private LineRenderer lineRenderer;
 
     private void Start()
     {
@@ -58,19 +60,17 @@ public class HexagonMover : MonoBehaviour
             CaldronManager.Instance.spiral.transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
         }
     }
-
+    
     private void FixedUpdate()
     {
         if (isMouseDownOnStartPattern && moveQueue.Count > 0)
         {
             movementTimer += Time.fixedDeltaTime;
-            movementProgress = movementTimer / moveDuration;
 
             if (movementTimer >= moveDuration)
             {
-                Vector3 direction = moveQueue.ElementAt(moveQueueIndex % moveQueue.Count);
+                Vector3 direction = moveQueue.Dequeue();
                 MoveToNextHexagon(direction);
-                moveQueueIndex++;
                 movementTimer = 0f;
             }
         }
@@ -81,16 +81,19 @@ public class HexagonMover : MonoBehaviour
         Vector3 startPosition = transform.position;
         Vector3 targetPosition = startPosition + GetHexagonOffset(direction);
 
-        movementProgress = Mathf.Clamp01(movementProgress);
-        transform.position = Vector3.Lerp(startPosition, targetPosition, movementProgress);
+        float progress = movementTimer / moveDuration;
+        float smoothProgress = Mathf.SmoothStep(0f, 1f, progress);
+        transform.position = Vector3.Lerp(startPosition, targetPosition, smoothProgress);
 
-        if (movementProgress >= 1f)
+        // LineRenderer'a yeni pozisyonu ekle
+        lineRenderer.positionCount++;
+        lineRenderer.SetPosition(lineRenderer.positionCount - 1, transform.position);
+
+        if (progress >= 1f)
         {
             PrintCurrentHexagonColor();
         }
     }
-
-
     
     private Vector3 GetHexagonOffset(Vector3 direction)
     {

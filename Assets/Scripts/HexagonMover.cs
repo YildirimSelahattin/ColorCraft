@@ -8,8 +8,9 @@ using UnityEngine.EventSystems;
 public class HexagonMover : MonoBehaviour
 {
     [SerializeField] private float moveDuration = 20f;
-    [SerializeField] private Button enqueuePatternButton;
-    [SerializeField] private Button enqueueSecondPatternButton;
+    [SerializeField] private Button enqueueRedButton;
+    [SerializeField] private Button enqueueGreenPatternButton;
+    [SerializeField] private Button enqueueBluePatternButton;
     [SerializeField] private GameObject startPatternSprite;
     
     private bool isMoving = false;
@@ -20,12 +21,6 @@ public class HexagonMover : MonoBehaviour
     private int moveQueueIndex = 0;
     
     [SerializeField] private LineRenderer lineRenderer;
-
-    private void Start()
-    {
-        enqueuePatternButton.onClick.AddListener(EnqueueMoves);
-        enqueueSecondPatternButton.onClick.AddListener(EnqueueSecondPatternMoves);
-    }
 
     private bool shouldMove = false;
 
@@ -61,6 +56,19 @@ public class HexagonMover : MonoBehaviour
         }
     }
     
+    private void Start()
+    {
+        enqueueRedButton.onClick.AddListener(EnqueueRedMoves);
+        enqueueGreenPatternButton.onClick.AddListener(EnqueueGreenMoves);
+        enqueueBluePatternButton.onClick.AddListener(EnqueueBlueMoves);
+        
+        if (lineRenderer != null)
+        {
+            lineRenderer.positionCount = 1;
+            lineRenderer.SetPosition(0, transform.position);
+        }
+    }
+
     private void FixedUpdate()
     {
         if (isMouseDownOnStartPattern && moveQueue.Count > 0)
@@ -128,7 +136,7 @@ public class HexagonMover : MonoBehaviour
         PrintMoveQueue();
     }
 
-    public void EnqueueMoves()
+    public void EnqueueRedMoves()
     {
         if (isMoving) return;
 
@@ -143,7 +151,7 @@ public class HexagonMover : MonoBehaviour
         EnqueueDirections(patternDirections);
     }
     
-    public void EnqueueSecondPatternMoves()
+    public void EnqueueGreenMoves()
     {
         if (isMoving) return;
 
@@ -155,6 +163,22 @@ public class HexagonMover : MonoBehaviour
 
         EnqueueDirections(secondPatternDirections);
     }
+    
+    public void EnqueueBlueMoves()
+    {
+        if (isMoving) return;
+
+        Vector3[] secondPatternDirections = {
+            new Vector3(0, -1, 0),   // Down
+            new Vector3(0, -1, 0),   // Down
+            new Vector3(-1, 1, 0),   // Left-Up
+            new Vector3(-1, 1, 0)   // Left-Up
+        };
+
+        EnqueueDirections(secondPatternDirections);
+    }
+    
+    
 
     private void PrintMoveQueue()
     {

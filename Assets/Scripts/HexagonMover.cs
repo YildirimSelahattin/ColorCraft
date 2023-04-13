@@ -35,21 +35,6 @@ public class HexagonMover : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Collider2D hitCollider = Physics2D.OverlapPoint(mousePosition);
-
-            if (hitCollider != null && hitCollider.gameObject == startPatternSprite.gameObject)
-            {
-                isMouseDownOnStartPattern = !isMouseDownOnStartPattern;
-            }
-        }
-        else if (Input.GetMouseButtonDown(1))
-        {
-            isMouseDownOnStartPattern = false;
-        }
-
         if (isMouseDownOnStartPattern)
         {
             CaldronManager.Instance.spiral.transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
@@ -82,6 +67,11 @@ public class HexagonMover : MonoBehaviour
                 movementTimer = 0f;
             }
         }
+    }
+    
+    public void OnStartPatternButtonPress()
+    {
+            isMouseDownOnStartPattern = !isMouseDownOnStartPattern;
     }
 
     private void MoveToNextHexagon(Vector3 direction)

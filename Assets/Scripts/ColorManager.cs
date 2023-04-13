@@ -15,22 +15,19 @@ public class ColorManager : MonoBehaviour
     public void OnClickRedButton()
     {
         Colorize(new Color(1, 51 / 255f, 51 / 255f, 1));
-        MoveToEmptySpot(movingR,redButton);
     }
     
     public void OnClickGreenButton()
     {
         Colorize(new Color(51 / 255f, 1, 51 / 255f, 1));
-        MoveToEmptySpot(movingG, greenButton);
     }
     
     public void OnClickBlueButton()
     {
         Colorize(new Color(51 / 255f, 51 / 255f, 1, 1));
-        MoveToEmptySpot(movingB, blueButton);
     }
 
-    public void MoveToEmptySpot(GameObject movingColor,Button button)
+/*    public void MoveToEmptySpot(GameObject movingColor,Button button)
     {
         if(CaldronManager.Instance.lastHexagonPos != -1)
         {
@@ -47,7 +44,7 @@ public class ColorManager : MonoBehaviour
                 CaldronManager.Instance.lastHexagonPos = -1;
             }
         }
-    }
+    }*/
     public void Colorize(Color color)
     {
         CaldronManager.Instance.spiral.color = color;

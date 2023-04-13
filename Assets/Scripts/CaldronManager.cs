@@ -8,9 +8,6 @@ public class CaldronManager : MonoBehaviour
     public static CaldronManager Instance;
     public Image spiral;
     public Image water;
-    public List<GameObject> hexagonSpotsList;
-    public List<bool> hexagonIsEmptyList;
-    public int lastHexagonPos;
     private void Awake()
     {
         if (Instance == null)

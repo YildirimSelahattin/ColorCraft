@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CaldronManager : MonoBehaviour
 {
     public static CaldronManager Instance;
-    public SpriteRenderer spiral;
-    public SpriteRenderer water;
+    public Image spiral;
+    public Image water;
     
     private void Awake()
     {

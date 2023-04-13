@@ -12,14 +12,14 @@ public class HexagonMover : MonoBehaviour
     [SerializeField] private Button enqueueGreenPatternButton;
     [SerializeField] private Button enqueueBluePatternButton;
     [SerializeField] private GameObject startPatternSprite;
-    
+
     private bool isMoving = false;
     private bool isMouseDownOnStartPattern = false;
     private bool isProcessingMoveQueue = false;
-    
+
     private Queue<Vector3> moveQueue = new Queue<Vector3>();
     private int moveQueueIndex = 0;
-    
+
     [SerializeField] private LineRenderer lineRenderer;
 
     private bool shouldMove = false;
@@ -32,31 +32,25 @@ public class HexagonMover : MonoBehaviour
     [SerializeField] private float rotationSpeed = 60f;
 
     private float movementProgress = 0f;
-    
+
     [SerializeField] private Button[] displayPatternButtons = new Button[3];
     private List<int> patternIndices = new List<int>();
+    private List<int> patternLengths = new List<int>();
+    private bool isCurrentPatternFinished = false;
+    private int currentPatternMoveCount = 0;
 
-
-    private void Update()
-    {
-        if (isMouseDownOnStartPattern)
-        {
-            CaldronManager.Instance.spiral.transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
-        }
-    }
-    
     private void Start()
     {
         enqueueRedButton.onClick.AddListener(EnqueueRedMoves);
         enqueueGreenPatternButton.onClick.AddListener(EnqueueGreenMoves);
         enqueueBluePatternButton.onClick.AddListener(EnqueueBlueMoves);
-        
+
         if (lineRenderer != null)
         {
             lineRenderer.positionCount = 1;
             lineRenderer.SetPosition(0, transform.position);
         }
-        
+
         for (int i = 0; i < displayPatternButtons.Length; i++)
         {
             int index = i;
@@ -75,14 +69,57 @@ public class HexagonMover : MonoBehaviour
                 Vector3 direction = moveQueue.Dequeue();
                 MoveToNextHexagon(direction);
                 movementTimer = 0f;
+                currentPatternMoveCount--;
+
+                if (currentPatternMoveCount <= 0 && patternIndices.Count > 0)
+                {
+                    patternIndices.RemoveAt(0);
+                    patternLengths.RemoveAt(0); // Remove the length of the finished pattern from patternLengths
+                    UpdatePatternDisplayButtons();
+
+                    if (patternLengths.Count > 0)
+                    {
+                        currentPatternMoveCount = patternLengths[0]; // Update the currentPatternMoveCount
+                    }
+                }
             }
         }
     }
-    
+
+
+    private void Update()
+    {
+        if (isMouseDownOnStartPattern)
+        {
+            CaldronManager.Instance.spiral.transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
+        }
+
+        if (moveQueue.Count == 0)
+        {
+            isMouseDownOnStartPattern = false;
+        }
+    }
+
     public void OnStartPatternButtonPress()
     {
-            isMouseDownOnStartPattern = !isMouseDownOnStartPattern;
+        isMouseDownOnStartPattern = !isMouseDownOnStartPattern;
     }
+    
+    private void UpdateLineRendererPreview()
+    {
+        Vector3 currentPosition = transform.position;
+        lineRenderer.positionCount = 1;
+        lineRenderer.SetPosition(0, currentPosition);
+
+        foreach (Vector3 direction in moveQueue)
+        {
+            Vector3 hexagonOffset = GetHexagonOffset(direction);
+            currentPosition += hexagonOffset;
+            lineRenderer.positionCount++;
+            lineRenderer.SetPosition(lineRenderer.positionCount - 1, currentPosition);
+        }
+    }
+
 
     private void MoveToNextHexagon(Vector3 direction)
     {
@@ -93,9 +130,11 @@ public class HexagonMover : MonoBehaviour
         float smoothProgress = Mathf.SmoothStep(0f, 1f, progress);
         transform.position = Vector3.Lerp(startPosition, targetPosition, smoothProgress);
 
+        /*
         // LineRenderer'a yeni pozisyonu ekle
         lineRenderer.positionCount++;
         lineRenderer.SetPosition(lineRenderer.positionCount - 1, transform.position);
+        */
 
         if (progress >= 1f)
         {
@@ -103,6 +142,40 @@ public class HexagonMover : MonoBehaviour
         }
     }
     
+    private void EnqueueDirections(Vector3[] directions, int patternIndex)
+    {
+        if (patternIndices.Count >= 3)
+        {
+            Debug.Log("Pattern limit reached.");
+            return;
+        }
+
+        if (patternIndices.Count < 3)
+        {
+            patternIndices.Add(patternIndex);
+            patternLengths.Add(directions.Length); // Add the length of the pattern to patternLengths
+
+            foreach (Vector3 direction in directions)
+            {
+                moveQueue.Enqueue(direction);
+            }
+
+            if (moveQueue.Count > 0 && patternIndices.Count == 1)
+            {
+                currentPatternMoveCount = directions.Length;
+            }
+            else if (moveQueue.Count == 0)
+            {
+                currentPatternMoveCount = 0;
+            }
+
+            UpdateLineRendererPreview();
+            PrintMoveQueue();
+            UpdatePatternDisplayButtons();
+        }
+    }
+
+
     private void RemovePatternAtIndex(int index)
     {
         if (index >= patternIndices.Count)
@@ -112,39 +185,62 @@ public class HexagonMover : MonoBehaviour
         }
 
         int patternIndexToRemove = patternIndices[index];
-        Vector3[] patternToRemove = null;
 
-        switch (patternIndexToRemove)
-        {
-            case 0: // Red pattern
-                patternToRemove = new Vector3[] {
-                    // ... (red pattern directions)
-                };
-                break;
-            case 1: // Green pattern
-                patternToRemove = new Vector3[] {
-                    // ... (green pattern directions)
-                };
-                break;
-            case 2: // Blue pattern
-                patternToRemove = new Vector3[] {
-                    // ... (blue pattern directions)
-                };
-                break;
-        }
+        // Paterni kaldırmadan önce orijinal moveQueue'u kaydedin
+        Queue<Vector3> originalMoveQueue = new Queue<Vector3>(moveQueue);
+        moveQueue.Clear();
 
-        if (patternToRemove != null)
+        // patternIndices'i güncelleyin
+        patternIndices.RemoveAt(index);
+        
+        isMouseDownOnStartPattern = true;
+
+        for (int i = 0; i < patternIndices.Count; i++)
         {
-            for (int i = 0; i < patternToRemove.Length; i++)
+            int patternIndex = patternIndices[i];
+            Vector3[] patternDirections = null;
+
+            switch (patternIndex)
             {
-                if (moveQueue.Count > 0)
+                case 0: // Red pattern
+                    patternDirections = new Vector3[]
+                    {
+                        new (-1, 1, 0), // Left-Up
+                        new (1, 1, 0), // Right-Up
+                        new (1, -1, 0), // Right-Down
+                        new (0, 1, 0), // Up
+                        new (-1, 1, 0) // Left-Up
+                    };
+                    break;
+                case 1: // Green pattern
+                    patternDirections = new Vector3[]
+                    {
+                        new (1, -1, 0), // Right-Down
+                        new (1, 1, 0), // Right-Up
+                        new (0, -1, 0) // Down
+                    };
+                    break;
+                case 2: // Blue pattern
+                    patternDirections = new Vector3[]
+                    {
+                        new (0, -1, 0), // Down
+                        new (0, -1, 0), // Down
+                        new (-1, 1, 0), // Left-Up
+                        new (-1, 1, 0) // Left-Up
+                    };
+                    break;
+            }
+
+            if (patternDirections != null)
+            {
+                foreach (Vector3 direction in patternDirections)
                 {
-                    moveQueue.Dequeue();
+                    moveQueue.Enqueue(direction);
                 }
             }
         }
 
-        patternIndices.RemoveAt(index);
+        UpdateLineRendererPreview();
         UpdatePatternDisplayButtons();
     }
     
@@ -157,10 +253,10 @@ public class HexagonMover : MonoBehaviour
         float y = direction.y > 0 ? 0.275f : -0.275f;
         return new Vector3(x, y, 0f);
     }
-    
+
     private void PrintCurrentHexagonColor()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position,        Vector2.zero);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero);
         if (hit.collider != null)
         {
             Hexagon hexagon = hit.collider.GetComponent<Hexagon>();
@@ -171,25 +267,7 @@ public class HexagonMover : MonoBehaviour
             }
         }
     }
-    
-    private void EnqueueDirections(Vector3[] directions, int patternIndex)
-    {
-        if (patternIndices.Count >= 3)
-        {
-            Debug.Log("Pattern limit reached.");
-            return;
-        }
 
-        patternIndices.Add(patternIndex);
-
-        foreach (Vector3 direction in directions)
-        {
-            moveQueue.Enqueue(direction);
-        }
-        PrintMoveQueue();
-        UpdatePatternDisplayButtons();
-    }
-    
     private void UpdatePatternDisplayButtons()
     {
         // Set all button colors to white
@@ -197,7 +275,7 @@ public class HexagonMover : MonoBehaviour
         {
             displayPatternButtons[i].image.color = Color.white;
         }
-        
+
         for (int i = 0; i < patternIndices.Count; i++)
         {
             int patternIndex = patternIndices[i];
@@ -215,50 +293,52 @@ public class HexagonMover : MonoBehaviour
             }
         }
     }
-    
+
     public void EnqueueRedMoves()
     {
         if (isMoving) return;
 
-        Vector3[] patternDirections = {
-            new Vector3(-1, 1, 0),  // Left-Up
-            new Vector3(1, 1, 0),   // Right-Up
-            new Vector3(1, -1, 0),  // Right-Down
-            new Vector3(0, 1, 0),   // Up
-            new Vector3(-1, 1, 0)   // Left-Up
+        Vector3[] patternDirections =
+        {
+            new (-1, 1, 0), // Left-Up
+            new (1, 1, 0), // Right-Up
+            new (1, -1, 0), // Right-Down
+            new (0, 1, 0), // Up
+            new (-1, 1, 0) // Left-Up
         };
 
         EnqueueDirections(patternDirections, 0);
     }
-    
+
     public void EnqueueGreenMoves()
     {
         if (isMoving) return;
 
-        Vector3[] secondPatternDirections = {
-            new Vector3(1, -1, 0),  // Right-Down
-            new Vector3(1, 1, 0),   // Right-Up
-            new Vector3(0, -1, 0)   // Down
+        Vector3[] secondPatternDirections =
+        {
+            new (1, -1, 0), // Right-Down
+            new (1, 1, 0), // Right-Up
+            new (0, -1, 0) // Down
         };
 
         EnqueueDirections(secondPatternDirections, 1);
     }
-    
+
     public void EnqueueBlueMoves()
     {
         if (isMoving) return;
 
-        Vector3[] secondPatternDirections = {
-            new Vector3(0, -1, 0),   // Down
-            new Vector3(0, -1, 0),   // Down
-            new Vector3(-1, 1, 0),   // Left-Up
-            new Vector3(-1, 1, 0)   // Left-Up
+        Vector3[] secondPatternDirections =
+        {
+            new (0, -1, 0), // Down
+            new (0, -1, 0), // Down
+            new (-1, 1, 0), // Left-Up
+            new (-1, 1, 0) // Left-Up
         };
 
         EnqueueDirections(secondPatternDirections, 2);
     }
-    
-    
+
 
     private void PrintMoveQueue()
     {

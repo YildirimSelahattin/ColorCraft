@@ -32,6 +32,10 @@ public class HexagonMover : MonoBehaviour
     [SerializeField] private float rotationSpeed = 60f;
 
     private float movementProgress = 0f;
+    
+    [SerializeField] private Button[] displayPatternButtons = new Button[3];
+    private List<int> patternIndices = new List<int>();
+
 
     private void Update()
     {
@@ -51,6 +55,12 @@ public class HexagonMover : MonoBehaviour
         {
             lineRenderer.positionCount = 1;
             lineRenderer.SetPosition(0, transform.position);
+        }
+        
+        for (int i = 0; i < displayPatternButtons.Length; i++)
+        {
+            int index = i;
+            displayPatternButtons[i].onClick.AddListener(() => RemovePatternAtIndex(index));
         }
     }
 
@@ -93,6 +103,51 @@ public class HexagonMover : MonoBehaviour
         }
     }
     
+    private void RemovePatternAtIndex(int index)
+    {
+        if (index >= patternIndices.Count)
+        {
+            Debug.LogWarning("Invalid pattern index.");
+            return;
+        }
+
+        int patternIndexToRemove = patternIndices[index];
+        Vector3[] patternToRemove = null;
+
+        switch (patternIndexToRemove)
+        {
+            case 0: // Red pattern
+                patternToRemove = new Vector3[] {
+                    // ... (red pattern directions)
+                };
+                break;
+            case 1: // Green pattern
+                patternToRemove = new Vector3[] {
+                    // ... (green pattern directions)
+                };
+                break;
+            case 2: // Blue pattern
+                patternToRemove = new Vector3[] {
+                    // ... (blue pattern directions)
+                };
+                break;
+        }
+
+        if (patternToRemove != null)
+        {
+            for (int i = 0; i < patternToRemove.Length; i++)
+            {
+                if (moveQueue.Count > 0)
+                {
+                    moveQueue.Dequeue();
+                }
+            }
+        }
+
+        patternIndices.RemoveAt(index);
+        UpdatePatternDisplayButtons();
+    }
+    
     private Vector3 GetHexagonOffset(Vector3 direction)
     {
         if (direction == Vector3.up) return new Vector3(0f, 0.55f, 0f);
@@ -117,15 +172,50 @@ public class HexagonMover : MonoBehaviour
         }
     }
     
-    private void EnqueueDirections(Vector3[] directions)
+    private void EnqueueDirections(Vector3[] directions, int patternIndex)
     {
+        if (patternIndices.Count >= 3)
+        {
+            Debug.Log("Pattern limit reached.");
+            return;
+        }
+
+        patternIndices.Add(patternIndex);
+
         foreach (Vector3 direction in directions)
         {
             moveQueue.Enqueue(direction);
         }
         PrintMoveQueue();
+        UpdatePatternDisplayButtons();
     }
-
+    
+    private void UpdatePatternDisplayButtons()
+    {
+        // Set all button colors to white
+        for (int i = 0; i < displayPatternButtons.Length; i++)
+        {
+            displayPatternButtons[i].image.color = Color.white;
+        }
+        
+        for (int i = 0; i < patternIndices.Count; i++)
+        {
+            int patternIndex = patternIndices[i];
+            switch (patternIndex)
+            {
+                case 0:
+                    displayPatternButtons[i].image.color = Color.red;
+                    break;
+                case 1:
+                    displayPatternButtons[i].image.color = Color.green;
+                    break;
+                case 2:
+                    displayPatternButtons[i].image.color = Color.blue;
+                    break;
+            }
+        }
+    }
+    
     public void EnqueueRedMoves()
     {
         if (isMoving) return;
@@ -138,7 +228,7 @@ public class HexagonMover : MonoBehaviour
             new Vector3(-1, 1, 0)   // Left-Up
         };
 
-        EnqueueDirections(patternDirections);
+        EnqueueDirections(patternDirections, 0);
     }
     
     public void EnqueueGreenMoves()
@@ -151,7 +241,7 @@ public class HexagonMover : MonoBehaviour
             new Vector3(0, -1, 0)   // Down
         };
 
-        EnqueueDirections(secondPatternDirections);
+        EnqueueDirections(secondPatternDirections, 1);
     }
     
     public void EnqueueBlueMoves()
@@ -165,7 +255,7 @@ public class HexagonMover : MonoBehaviour
             new Vector3(-1, 1, 0)   // Left-Up
         };
 
-        EnqueueDirections(secondPatternDirections);
+        EnqueueDirections(secondPatternDirections, 2);
     }
     
     

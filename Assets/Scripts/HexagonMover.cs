@@ -1,15 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using DG.Tweening;
-using System;
-using Unity.VisualScripting;
 
 public class HexagonMover : MonoBehaviour
 {
+    // Serialized variables
     [SerializeField] private float moveDuration = 20f;
     [SerializeField] private Button enqueueRedButton;
     [SerializeField] private Button enqueueGreenPatternButton;
@@ -17,26 +13,17 @@ public class HexagonMover : MonoBehaviour
     [SerializeField] private GameObject startPatternSprite;
     public GameObject[] movingSprites;
 
+    // Private variables
     private bool isMoving = false;
     private bool isMouseDownOnStartPattern = false;
-    private bool isProcessingMoveQueue = false;
-
-    public Queue<Vector3> moveQueue = new Queue<Vector3>();
+    private Queue<Vector3> moveQueue = new Queue<Vector3>();
     private int moveQueueIndex = 0;
-
     [SerializeField] private LineRenderer lineRenderer;
-
-    private bool shouldMove = false;
-
     private float elapsedTime;
     private float rotationElapsedTime;
-
-    private float movementTimer = 0f; // hareket süresini kontrol etmek için yeni bir değişken
-
+    private float movementTimer = 0f;
     [SerializeField] private float rotationSpeed = 60f;
-
     private float movementProgress = 0f;
-
     [SerializeField] private Button[] displayPatternButtons = new Button[3];
     public List<int> patternIndices = new List<int>();
     public List<int> patternLengths = new List<int>();
@@ -45,16 +32,19 @@ public class HexagonMover : MonoBehaviour
 
     private void Start()
     {
+        // Add button listeners
         enqueueRedButton.onClick.AddListener(EnqueueRedMoves);
         enqueueGreenPatternButton.onClick.AddListener(EnqueueGreenMoves);
         enqueueBluePatternButton.onClick.AddListener(EnqueueBlueMoves);
 
+        // Initialize line renderer
         if (lineRenderer != null)
         {
             lineRenderer.positionCount = 1;
             lineRenderer.SetPosition(0, transform.position);
         }
 
+        // Add listeners to pattern buttons
         for (int i = 0; i < displayPatternButtons.Length; i++)
         {
             int index = i;
@@ -64,6 +54,7 @@ public class HexagonMover : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // Move the hexagon when the mouse is down and the queue is not empty
         if (isMouseDownOnStartPattern && moveQueue.Count > 0)
         {
             movementTimer += Time.fixedDeltaTime;
@@ -90,20 +81,22 @@ public class HexagonMover : MonoBehaviour
         }
     }
 
-
     private void Update()
     {
+        // Rotate the spiral when the mouse is down
         if (isMouseDownOnStartPattern)
         {
             CaldronManager.Instance.spiral.transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
         }
 
+        // Stop rotating the spiral when the queue is empty
         if (moveQueue.Count == 0)
         {
             isMouseDownOnStartPattern = false;
         }
     }
 
+    
     public void OnStartPatternButtonPress()
     {
         isMouseDownOnStartPattern = !isMouseDownOnStartPattern;
@@ -179,8 +172,7 @@ public class HexagonMover : MonoBehaviour
             PrintMoveQueue();
         }
     }
-
-
+    
     private void RemovePatternAtIndex(int index)
     {
         if (index >= patternIndices.Count)

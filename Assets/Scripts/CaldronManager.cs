@@ -8,6 +8,7 @@ public class CaldronManager : MonoBehaviour
     public static CaldronManager Instance;
     public Image spiral;
     public Image water;
+    
     private void Awake()
     {
         if (Instance == null)

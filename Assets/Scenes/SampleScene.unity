@@ -477,7 +477,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 665296949}
   - {fileID: 1181806269}
   - {fileID: 343532136}
   - {fileID: 805844613}
@@ -694,7 +693,7 @@ RectTransform:
   - {fileID: 554759321}
   - {fileID: 400702057}
   m_Father: {fileID: 246678735}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -724,9 +723,9 @@ MonoBehaviour:
   redButton: {fileID: 309953651}
   greenButton: {fileID: 554759322}
   blueButton: {fileID: 400702058}
-  movingR: {fileID: 1450711649086229900, guid: 49ba8159d8568c44680d34c637f3a0a8, type: 3}
-  movingG: {fileID: 5151789661750544506, guid: 971720de6ca635b4db6c6fb699b39f9d, type: 3}
-  movingB: {fileID: 3285471392872930451, guid: 7b63627ff9f8fd74b889cf37f704f051, type: 3}
+  movingR: {fileID: 0}
+  movingG: {fileID: 0}
+  movingB: {fileID: 0}
 --- !u!1 &400702056
 GameObject:
   m_ObjectHideFlags: 0
@@ -1040,6 +1039,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1113,6 +1113,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1bd2418cb34672438bd0f1bf687b13b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panSpeed: 0.1
+  zoomSpeed: 0.5
+  minZoom: 2
+  maxZoom: 10
 --- !u!1 &554759320
 GameObject:
   m_ObjectHideFlags: 0
@@ -1258,7 +1274,7 @@ GameObject:
   - component: {fileID: 665296951}
   - component: {fileID: 665296950}
   m_Layer: 5
-  m_Name: Target
+  m_Name: Target Banner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1276,12 +1292,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 246678735}
+  m_Father: {fileID: 1181806269}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -245, y: 237.58063}
+  m_AnchoredPosition: {x: 0.39997864, y: 98.880615}
   m_SizeDelta: {x: 54.8387, y: 54.8387}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &665296950
@@ -1358,7 +1374,7 @@ RectTransform:
   - {fileID: 970600689}
   - {fileID: 40918664}
   m_Father: {fileID: 246678735}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -1913,7 +1929,7 @@ GameObject:
   - component: {fileID: 1181806271}
   - component: {fileID: 1181806270}
   m_Layer: 5
-  m_Name: Target Image
+  m_Name: Target Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1931,13 +1947,14 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 665296949}
   - {fileID: 2005493331}
   m_Father: {fileID: 246678735}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -245.4, y: 138.7}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -245.4, y: -162.30002}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1181806270
@@ -2661,6 +2678,7 @@ MonoBehaviour:
   - {fileID: 1293429257}
   - {fileID: 1315935402}
   patternIndices: 
+  patternLengths: 
 --- !u!1 &2005493330
 GameObject:
   m_ObjectHideFlags: 0
@@ -2673,7 +2691,7 @@ GameObject:
   - component: {fileID: 2005493333}
   - component: {fileID: 2005493332}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Target Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2692,7 +2710,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1181806269}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2782,5 +2800,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hexagonPrefab: {fileID: 1425128839086806720, guid: 9521e0fe70577e64e8868890d7f4bcf7, type: 3}
-  numberOfRings: 15
+  numberOfRings: 21
   hexagonSize: 0.232

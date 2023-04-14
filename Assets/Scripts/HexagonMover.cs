@@ -107,12 +107,39 @@ public class HexagonMover : MonoBehaviour
         lineRenderer.positionCount = 1;
         lineRenderer.SetPosition(0, currentPosition);
 
+        int remainingPatternMoveCount = currentPatternMoveCount;
+        int currentPatternIndex = 0;
+
         foreach (Vector3 direction in moveQueue)
         {
+            if (remainingPatternMoveCount <= 0)
+            {
+                if (patternLengths.Count > currentPatternIndex + 1)
+                {
+                    currentPatternIndex++;
+                    remainingPatternMoveCount = patternLengths[currentPatternIndex];
+                }
+                else
+                {
+                    break;
+                }
+            }
+
             Vector3 hexagonOffset = GetHexagonOffset(direction);
             currentPosition += hexagonOffset;
-            lineRenderer.positionCount++;
-            lineRenderer.SetPosition(lineRenderer.positionCount - 1, currentPosition);
+
+            RaycastHit2D hit = Physics2D.Raycast(currentPosition, Vector2.zero);
+            if (hit.collider != null)
+            {
+                lineRenderer.positionCount++;
+                lineRenderer.SetPosition(lineRenderer.positionCount - 1, currentPosition);
+            }
+            else
+            {
+                break;
+            }
+
+            remainingPatternMoveCount--;
         }
     }
     

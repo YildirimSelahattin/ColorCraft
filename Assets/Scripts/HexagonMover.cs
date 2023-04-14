@@ -121,19 +121,16 @@ public class HexagonMover : MonoBehaviour
         Vector3 startPosition = transform.position;
         Vector3 targetPosition = startPosition + GetHexagonOffset(direction);
 
-        float progress = movementTimer / moveDuration;
-        float smoothProgress = Mathf.SmoothStep(0f, 1f, progress);
-        transform.position = Vector3.Lerp(startPosition, targetPosition, smoothProgress);
-
-        /*
-        // LineRenderer'a yeni pozisyonu ekle
-        lineRenderer.positionCount++;
-        lineRenderer.SetPosition(lineRenderer.positionCount - 1, transform.position);
-        */
-
-        if (progress >= 1f)
+        if (targetPosition != startPosition)
         {
-            PrintCurrentHexagonColor();
+            float progress = movementTimer / moveDuration;
+            float smoothProgress = Mathf.SmoothStep(0f, 1f, progress);
+            transform.position = Vector3.Lerp(startPosition, targetPosition, smoothProgress);
+
+            if (progress >= 1f)
+            {
+                PrintCurrentHexagonColor();
+            }
         }
     }
 
@@ -291,12 +288,27 @@ public class HexagonMover : MonoBehaviour
 
     private Vector3 GetHexagonOffset(Vector3 direction)
     {
-        if (direction == Vector3.up) return new Vector3(0f, 0.55f, 0f);
-        if (direction == Vector3.down) return new Vector3(0f, -0.55f, 0f);
+        Vector3 potentialOffset = Vector3.zero;
+
+        if (direction == Vector3.up) potentialOffset = new Vector3(0f, 0.55f, 0f);
+        if (direction == Vector3.down) potentialOffset = new Vector3(0f, -0.55f, 0f);
 
         float x = direction.x > 0 ? 0.475f : -0.475f;
         float y = direction.y > 0 ? 0.275f : -0.275f;
-        return new Vector3(x, y, 0f);
+        if (direction != Vector3.up && direction != Vector3.down) potentialOffset = new Vector3(x, y, 0f);
+
+        Vector3 potentialNewPosition = transform.position + potentialOffset;
+        RaycastHit2D hit = Physics2D.Raycast(potentialNewPosition, Vector2.zero);
+        if (hit.collider != null)
+        {
+            Hexagon hexagon = hit.collider.GetComponent<Hexagon>();
+            if (hexagon != null)
+            {
+                return potentialOffset;
+            }
+        }
+
+        return Vector3.zero;
     }
 
     private void PrintCurrentHexagonColor()

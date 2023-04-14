@@ -5,18 +5,17 @@ using DG.Tweening;
 
 public class HexagonMover : MonoBehaviour
 {
-    // Serialized variables
-    [SerializeField] private float moveDuration = 20f;
-    [SerializeField] private Button enqueueRedButton;
-    [SerializeField] private Button enqueueGreenPatternButton;
-    [SerializeField] private Button enqueueBluePatternButton;
     [SerializeField] private GameObject startPatternSprite;
     public GameObject[] movingSprites;
 
-    // Private variables
-    private bool isMoving = false;
-    private bool isMouseDownOnStartPattern = false;
-    private Queue<Vector3> moveQueue = new Queue<Vector3>();
+    [SerializeField] private Button enqueueRedButton;
+    [SerializeField] private Button enqueueGreenPatternButton;
+    [SerializeField] private Button enqueueBluePatternButton;
+    public bool isMoving = false;
+    public bool isMouseDownOnStartPattern = false;
+    private bool isProcessingMoveQueue = false;
+
+    public Queue<Vector3> moveQueue = new Queue<Vector3>();
     private int moveQueueIndex = 0;
     [SerializeField] private LineRenderer lineRenderer;
     private float elapsedTime;
@@ -29,13 +28,34 @@ public class HexagonMover : MonoBehaviour
     public List<int> patternLengths = new List<int>();
     private bool isCurrentPatternFinished = false;
     private int currentPatternMoveCount = 0;
-
-    private void Start()
+    public static HexagonMover Instance;
+    private void Awake()
     {
-        // Add button listeners
-        enqueueRedButton.onClick.AddListener(EnqueueRedMoves);
-        enqueueGreenPatternButton.onClick.AddListener(EnqueueGreenMoves);
-        enqueueBluePatternButton.onClick.AddListener(EnqueueBlueMoves);
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
+    public void StartFunctions()
+    {
+        for (int colorCounter = 0; colorCounter < ColorManager.Instance.sideButtonArray.Length; colorCounter++)
+        {
+            if (ColorManager.Instance.sideButtonArray[colorCounter] != null)
+            {
+                switch (ColorManager.Instance.sideButtonArray[colorCounter].GetComponent<ColorButtonData>().colorName)
+                {
+                    case "red":
+                        ColorManager.Instance.sideButtonArray[colorCounter].GetComponent<Button>().onClick.AddListener(EnqueueRedMoves);
+                        break;
+                    case "green":
+                        ColorManager.Instance.sideButtonArray[colorCounter].GetComponent<Button>().onClick.AddListener(EnqueueGreenMoves);
+                        break;
+                    case "blue":
+                        ColorManager.Instance.sideButtonArray[colorCounter].GetComponent<Button>().onClick.AddListener(EnqueueBlueMoves);
+                        break;
+                }
+            }
+        }
 
         // Initialize line renderer
         if (lineRenderer != null)
@@ -99,6 +119,25 @@ public class HexagonMover : MonoBehaviour
     public void OnStartPatternButtonPress()
     {
         isMouseDownOnStartPattern = !isMouseDownOnStartPattern;
+        
+        if (isMouseDownOnStartPattern == true)
+        {
+            isMoving = true;
+            MoveToNextHexagon();
+        }
+        else
+        {
+            patternIndices.RemoveAt(0);
+            patternLengths.RemoveAt(0); // Remove the length of the finished pattern from patternLengths
+            UpdatePatternDisplayButtons();
+            UpdateLineRendererPreview();
+
+            if (patternLengths.Count > 0)
+            {
+                currentPatternMoveCount = patternLengths[0]; // Update the currentPatternMoveCount
+            }
+            isMoving = false;
+        }
     }
 
     private void UpdateLineRendererPreview()
@@ -142,23 +181,44 @@ public class HexagonMover : MonoBehaviour
             remainingPatternMoveCount--;
         }
     }
-    
-    private void MoveToNextHexagon(Vector3 direction)
+
+
+    private void MoveToNextHexagon()
     {
+        Vector3 direction = moveQueue.Dequeue();
         Vector3 startPosition = transform.position;
         Vector3 targetPosition = startPosition + GetHexagonOffset(direction);
 
-        if (targetPosition != startPosition)
+        transform.DOMove(targetPosition, 0.5f).OnComplete(() =>
         {
-            float progress = movementTimer / moveDuration;
-            float smoothProgress = Mathf.SmoothStep(0f, 1f, progress);
-            transform.position = Vector3.Lerp(startPosition, targetPosition, smoothProgress);
+            PrintCurrentHexagonColor();
+            currentPatternMoveCount--;
 
-            if (progress >= 1f)
+            if (currentPatternMoveCount <= 0 && patternIndices.Count > 0)
             {
-                PrintCurrentHexagonColor();
+                patternIndices.RemoveAt(0);
+                patternLengths.RemoveAt(0); // Remove the length of the finished pattern from patternLengths
+                UpdatePatternDisplayButtons();
+
+                if (patternLengths.Count > 0)
+                {
+                    currentPatternMoveCount = patternLengths[0]; // Update the currentPatternMoveCount
+                }
             }
-        }
+            if (isMouseDownOnStartPattern == true && moveQueue.Count > 0)
+            {
+                MoveToNextHexagon();
+            }
+
+        }).SetEase(Ease.Linear);
+
+        /*
+        // LineRenderer'a yeni pozisyonu ekle
+        lineRenderer.positionCount++;
+        lineRenderer.SetPosition(lineRenderer.positionCount - 1, transform.position);
+        */
+
+
     }
 
     private void EnqueueDirections(Vector3[] directions, int patternIndex, Button pressedButton)
@@ -197,9 +257,9 @@ public class HexagonMover : MonoBehaviour
     
     private void RemovePatternAtIndex(int index)
     {
-        if (index >= patternIndices.Count)
+        if (index >= patternIndices.Count || isMoving)
         {
-            Debug.LogWarning("Invalid pattern index.");
+            Debug.Log("Invalid pattern index.");
             return;
         }
 
@@ -264,27 +324,16 @@ public class HexagonMover : MonoBehaviour
         //move removed one to 
         displayPatternButtons[index].image.color = Color.white;
         GameObject temp = Instantiate(movingSprites[patternIndices[index]], displayPatternButtons[index].transform);
-        Vector3 aimedPos = new Vector3();
-        if (patternIndices[index] == 0)
-        {
-            aimedPos = enqueueRedButton.transform.position;
-        }
-
-        if (patternIndices[index] == 1)
-        {
-            aimedPos = enqueueGreenPatternButton.transform.position;
-        }
-
-        if (patternIndices[index] == 2)
-        {
-            aimedPos = enqueueBluePatternButton.transform.position;
-        }
-
+        Vector3 aimedPos = ColorManager.Instance.sideButtonArray[patternIndices[index]].transform.position;
+        
         temp.transform.localRotation = new Quaternion(0, 0, 90, 0);
         temp.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.5f);
 
         temp.transform.DOMove(aimedPos, 0.5f).OnComplete(() =>
         {
+            ColorManager.Instance.sideButtonArray[patternIndices[index]].GetComponent<ColorButtonData>().colorAmount++;
+            ColorManager.Instance.sideButtonArray[patternIndices[index]].GetComponent<ColorButtonData>().button.interactable = true;
+            ColorManager.Instance.sideButtonArray[patternIndices[index]].GetComponent<ColorButtonData>().numberText.text = ColorManager.Instance.sideButtonArray[patternIndices[index]].GetComponent<ColorButtonData>().colorAmount.ToString();
             Destroy(temp.gameObject);
             patternIndices.RemoveAt(index);
             patternLengths.RemoveAt(index);
@@ -312,6 +361,8 @@ public class HexagonMover : MonoBehaviour
             }
         });
     }
+
+
 
     private Vector3 GetHexagonOffset(Vector3 direction)
     {
@@ -392,47 +443,83 @@ public class HexagonMover : MonoBehaviour
     
     public void EnqueueRedMoves()
     {
-        if (isMoving) return;
-
-        Vector3[] patternDirections =
+        if (isMoving || ColorManager.Instance.sideButtonArray[0].GetComponent<ColorButtonData>().colorAmount < 1)
         {
+            return;
+        }
+        else
+        {
+            if (ColorManager.Instance.sideButtonArray[0].GetComponent<ColorButtonData>().colorAmount == 1)
+            {
+                ColorManager.Instance.sideButtonArray[0].GetComponent<ColorButtonData>().button.interactable = false;
+            }
+            Debug.Log("sa");
+            Vector3[] patternDirections =
+            {
             new(-1, 1, 0), // Left-Up
             new(1, 1, 0), // Right-Up
             new(1, -1, 0), // Right-Down
             new(0, 1, 0), // Up
             new(-1, 1, 0) // Left-Up
         };
+            ColorManager.Instance.sideButtonArray[0].GetComponent<ColorButtonData>().colorAmount--;
+            ColorManager.Instance.sideButtonArray[0].GetComponent<ColorButtonData>().numberText.text = ColorManager.Instance.sideButtonArray[0].GetComponent<ColorButtonData>().colorAmount.ToString();
+            EnqueueDirections(patternDirections, 0, ColorManager.Instance.sideButtonArray[0].GetComponent<Button>());
+        }
 
-        EnqueueDirections(patternDirections, 0, enqueueRedButton);
     }
     
     public void EnqueueGreenMoves()
     {
-        if (isMoving) return;
 
-        Vector3[] secondPatternDirections =
+
+        if (isMoving || ColorManager.Instance.sideButtonArray[1].GetComponent<ColorButtonData>().colorAmount < 0)
         {
+            return;
+        }
+        else
+        {
+            if (ColorManager.Instance.sideButtonArray[1].GetComponent<ColorButtonData>().colorAmount == 1)
+            {
+                ColorManager.Instance.sideButtonArray[1].GetComponent<ColorButtonData>().button.interactable = false;
+            }
+            Debug.Log("sa");
+            Vector3[] patternDirections =
+            {
             new(1, -1, 0), // Right-Down
             new(1, 1, 0), // Right-Up
             new(0, -1, 0) // Down
         };
-
-        EnqueueDirections(secondPatternDirections, 1, enqueueGreenPatternButton);
+            ColorManager.Instance.sideButtonArray[1].GetComponent<ColorButtonData>().colorAmount--;
+            ColorManager.Instance.sideButtonArray[1].GetComponent<ColorButtonData>().numberText.text = ColorManager.Instance.sideButtonArray[1].GetComponent<ColorButtonData>().colorAmount.ToString();
+            EnqueueDirections(patternDirections, 1, ColorManager.Instance.sideButtonArray[1].GetComponent<Button>());
+        }
     }
 
     public void EnqueueBlueMoves()
     {
-        if (isMoving) return;
-
-        Vector3[] thirdPatternDirections =
+        if (isMoving || ColorManager.Instance.sideButtonArray[2].GetComponent<ColorButtonData>().colorAmount < 0)
         {
+            return;
+        }
+        else
+        {
+            if (ColorManager.Instance.sideButtonArray[2].GetComponent<ColorButtonData>().colorAmount == 1)
+            {
+                ColorManager.Instance.sideButtonArray[2].GetComponent<ColorButtonData>().button.interactable = false;
+            }
+            Debug.Log("sa");
+            Vector3[] patternDirections =
+            {
             new(0, -1, 0), // Down
             new(0, -1, 0), // Down
             new(-1, 1, 0), // Left-Up
             new(-1, 1, 0) // Left-Up
         };
-
-        EnqueueDirections(thirdPatternDirections, 2, enqueueBluePatternButton);
+            ColorManager.Instance.sideButtonArray[2].GetComponent<ColorButtonData>().colorAmount--;
+            ColorManager.Instance.sideButtonArray[2].GetComponent<ColorButtonData>().numberText.text = ColorManager.Instance.sideButtonArray[2].GetComponent<ColorButtonData>().colorAmount.ToString();
+            EnqueueDirections(patternDirections, 2, ColorManager.Instance.sideButtonArray[2].GetComponent<Button>());
+        }
     }
 
     private void PrintMoveQueue()

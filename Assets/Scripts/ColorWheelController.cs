@@ -5,12 +5,16 @@ using UnityEngine;
 public class ColorWheelController : MonoBehaviour
 {
     public GameObject hexagonPrefab;
-    public int numberOfRings = 6;
+    public int numberOfRings = 0;
     public float hexagonSize = 1f;
 
     private void Start()
     {
-        CreateColorWheel();
+        if (GameDataManager.Instance.rawData.levelsArray[0].level.levelType == "hexagon")
+        {
+            numberOfRings = GameDataManager.Instance.rawData.levelsArray[0].level.levelParametres[0];
+            CreateColorWheel();
+        }
     }
 
     private void CreateColorWheel()
@@ -25,7 +29,6 @@ public class ColorWheelController : MonoBehaviour
                 hexagon.transform.SetParent(transform);
                 hexagon.transform.localPosition = CalculateHexagonPosition(ring, i);
                 hexagon.transform.localScale = Vector3.one * hexagonSize;
-
                 Color color = CalculateHexagonColor(ring, i);
                 hexagon.GetComponent<Hexagon>().SetColor(color);
             }

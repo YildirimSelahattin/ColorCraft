@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3285471392872930448}
   - component: {fileID: 3285471392872930449}
   m_Layer: 5
-  m_Name: movingB
+  m_Name: movingColorPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

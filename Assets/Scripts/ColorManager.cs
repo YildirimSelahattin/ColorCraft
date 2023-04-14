@@ -10,9 +10,6 @@ public class ColorManager : MonoBehaviour
     public GameObject sideUIButtonPrefab;
     public GameObject movingColorPrefab;
     public GameObject sideButtonParent;
-    public Button redButton;
-    public Button greenButton;
-    public Button blueButton;
     public GameObject[] sideButtonArray = new GameObject[5];
     public GameObject[] movingColorArray = new GameObject[5];
     public static ColorManager Instance;
@@ -52,11 +49,11 @@ public class ColorManager : MonoBehaviour
                     break;
                 case "turqouise":
                     colorIndex = 4;
-                    colorButton.GetComponent<Image>().color = Color.magenta;
+                    colorButton.GetComponent<Image>().color = Color.cyan;
                     break;
                 case "purple":
                     colorIndex = 5;
-                    colorButton.GetComponent<Image>().color = Color.white;
+                    colorButton.GetComponent<Image>().color = Color.magenta;
                     break;
             }
             Debug.Log(colorIndex);
@@ -103,9 +100,5 @@ public class ColorManager : MonoBehaviour
             }
         }
     }*/
-    public void Colorize(Color color)
-    {
-        CaldronManager.Instance.spiral.color = color;
-    }
 
 }

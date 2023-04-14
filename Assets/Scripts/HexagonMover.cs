@@ -7,10 +7,7 @@ public class HexagonMover : MonoBehaviour
 {
     [SerializeField] private GameObject startPatternSprite;
     public GameObject[] movingSprites;
-
-    [SerializeField] private Button enqueueRedButton;
-    [SerializeField] private Button enqueueGreenPatternButton;
-    [SerializeField] private Button enqueueBluePatternButton;
+    
     public bool isMoving = false;
     public bool isMouseDownOnStartPattern = false;
     private bool isProcessingMoveQueue = false;
@@ -29,6 +26,7 @@ public class HexagonMover : MonoBehaviour
     private bool isCurrentPatternFinished = false;
     private int currentPatternMoveCount = 0;
     public static HexagonMover Instance;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -71,36 +69,7 @@ public class HexagonMover : MonoBehaviour
             displayPatternButtons[i].onClick.AddListener(() => RemovePatternAtIndex(index));
         }
     }
-
-    private void FixedUpdate()
-    {
-        // Move the hexagon when the mouse is down and the queue is not empty
-        if (isMouseDownOnStartPattern && moveQueue.Count > 0)
-        {
-            movementTimer += Time.fixedDeltaTime;
-
-            if (movementTimer >= moveDuration)
-            {
-                Vector3 direction = moveQueue.Dequeue();
-                MoveToNextHexagon(direction);
-                movementTimer = 0f;
-                currentPatternMoveCount--;
-
-                if (currentPatternMoveCount <= 0 && patternIndices.Count > 0)
-                {
-                    patternIndices.RemoveAt(0);
-                    patternLengths.RemoveAt(0); // Remove the length of the finished pattern from patternLengths
-                    UpdatePatternDisplayButtons();
-
-                    if (patternLengths.Count > 0)
-                    {
-                        currentPatternMoveCount = patternLengths[0]; // Update the currentPatternMoveCount
-                    }
-                }
-            }
-        }
-    }
-
+    
     private void Update()
     {
         // Rotate the spiral when the mouse is down
@@ -208,6 +177,10 @@ public class HexagonMover : MonoBehaviour
             if (isMouseDownOnStartPattern == true && moveQueue.Count > 0)
             {
                 MoveToNextHexagon();
+            }
+            else
+            {
+                isMoving = false;
             }
 
         }).SetEase(Ease.Linear);
@@ -398,6 +371,7 @@ public class HexagonMover : MonoBehaviour
             if (hexagon != null)
             {
                 CaldronManager.Instance.water.color = hexagon.color;
+                CaldronManager.Instance.spiral.color = hexagon.color;
                 Debug.Log("Current hexagon color: " + hexagon.color);
             }
         }

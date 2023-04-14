@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    [SerializeField] private ColorWheelController colorWheelController;
+    
     [SerializeField] private float panSpeed = 0.1f;
     [SerializeField] private float zoomSpeed = 0.5f;
     [SerializeField] private float minZoom = 2f;
@@ -40,20 +42,22 @@ public class CameraController : MonoBehaviour
                 Invoke("ResetDoubleTap", 0.3f); // 0.3 saniye içinde 2. tıklama yapılmazsa çift tıklama sayılmayacak
             }
         }
+        
         if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
+            Vector2 deltaPosition = touch.deltaPosition * Time.deltaTime * panSpeed;
 
-            if (touch.phase == TouchPhase.Began)
-            {
-                touchStart = cam.ScreenToWorldPoint(touch.position);
-            }
-            else if (touch.phase == TouchPhase.Moved)
-            {
-                Vector2 direction = touchStart - (Vector2)cam.ScreenToWorldPoint(touch.position);
-                transform.position += (Vector3)direction * panSpeed;
-            }
+            float radius = colorWheelController.GetOuterRadius();
+            Vector2 boundary = new Vector2(radius, radius) * 1.7f; // Çarpanı 1.7f olarak güncelledik.
+            Vector3 newPosition = transform.position - new Vector3(deltaPosition.x, deltaPosition.y, 0f);
+
+            newPosition.x = Mathf.Clamp(newPosition.x, -boundary.x, boundary.x);
+            newPosition.y = Mathf.Clamp(newPosition.y, -boundary.y, boundary.y + 2f); // Yukarı doğru ekstra 2 birim ekledik.
+
+            transform.position = newPosition;
         }
+        
         else if (Input.touchCount == 2)
         {
             Touch touchZero = Input.GetTouch(0);

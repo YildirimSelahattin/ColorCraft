@@ -49,7 +49,6 @@ public class ColorWheelController : MonoBehaviour
         return cornerPosition + offset;
     }
 
-    
     private Color CalculateHexagonColor(int ring, int index)
     {
         if (ring == 0)
@@ -62,5 +61,18 @@ public class ColorWheelController : MonoBehaviour
         float value = 1f;
 
         return Color.HSVToRGB(hue, saturation, value);
+    }
+    
+    //for Camera
+    public Vector2 GetBoundary()
+    {
+        float horizontalBoundary = numberOfRings * hexagonSize * 0.87f;
+        float verticalBoundary = numberOfRings * hexagonSize * 0.755f;
+        return new Vector2(horizontalBoundary, verticalBoundary);
+    }
+    
+    public float GetOuterRadius()
+    {
+        return numberOfRings * hexagonSize;
     }
 }

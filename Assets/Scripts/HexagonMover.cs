@@ -95,7 +95,6 @@ public class HexagonMover : MonoBehaviour
             isMouseDownOnStartPattern = false;
         }
     }
-
     
     public void OnStartPatternButtonPress()
     {
@@ -116,8 +115,7 @@ public class HexagonMover : MonoBehaviour
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, currentPosition);
         }
     }
-
-
+    
     private void MoveToNextHexagon(Vector3 direction)
     {
         Vector3 startPosition = transform.position;
@@ -291,32 +289,6 @@ public class HexagonMover : MonoBehaviour
         });
     }
 
-    private void UpdatePatternDisplayButtonRemove()
-    {
-        // Set all button colors to white
-        for (int i = 0; i < displayPatternButtons.Length; i++)
-        {
-            displayPatternButtons[i].image.color = Color.white;
-        }
-
-        for (int i = 0; i < patternIndices.Count; i++)
-        {
-            int patternIndex = patternIndices[i];
-            switch (patternIndex)
-            {
-                case 0:
-                    displayPatternButtons[i].image.color = Color.red;
-                    break;
-                case 1:
-                    displayPatternButtons[i].image.color = Color.green;
-                    break;
-                case 2:
-                    displayPatternButtons[i].image.color = Color.blue;
-                    break;
-            }
-        }
-    }
-
     private Vector3 GetHexagonOffset(Vector3 direction)
     {
         if (direction == Vector3.up) return new Vector3(0f, 0.55f, 0f);
@@ -340,8 +312,7 @@ public class HexagonMover : MonoBehaviour
             }
         }
     }
-
-
+    
     public void MoveToEmptySpot(GameObject movingColor, Button targetButton, Vector3[] directions, Button pressedButton)
     {
         GameObject temp = Instantiate(movingColor, pressedButton.gameObject.transform);
@@ -379,8 +350,7 @@ public class HexagonMover : MonoBehaviour
             }
         }
     }
-
-
+    
     public void EnqueueRedMoves()
     {
         if (isMoving) return;
@@ -396,8 +366,7 @@ public class HexagonMover : MonoBehaviour
 
         EnqueueDirections(patternDirections, 0, enqueueRedButton);
     }
-
-
+    
     public void EnqueueGreenMoves()
     {
         if (isMoving) return;
@@ -426,7 +395,6 @@ public class HexagonMover : MonoBehaviour
 
         EnqueueDirections(thirdPatternDirections, 2, enqueueBluePatternButton);
     }
-
 
     private void PrintMoveQueue()
     {

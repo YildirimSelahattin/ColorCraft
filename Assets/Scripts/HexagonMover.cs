@@ -2,16 +2,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.EventSystems;
 
 public class HexagonMover : MonoBehaviour
 {
     [SerializeField] private GameObject startPatternSprite;
     public GameObject[] movingSprites;
-    
     public bool isMoving = false;
     public bool isMouseDownOnStartPattern = false;
     private bool isProcessingMoveQueue = false;
-
     public Queue<Vector3> moveQueue = new Queue<Vector3>();
     private int moveQueueIndex = 0;
     [SerializeField] private LineRenderer lineRenderer;
@@ -26,6 +25,9 @@ public class HexagonMover : MonoBehaviour
     private bool isCurrentPatternFinished = false;
     private int currentPatternMoveCount = 0;
     public static HexagonMover Instance;
+    
+    private bool isButtonPressed = false;
+    public Button patternButton;
     
     private void Awake()
     {
@@ -54,37 +56,42 @@ public class HexagonMover : MonoBehaviour
                 }
             }
         }
-
-        // Initialize line renderer
         if (lineRenderer != null)
         {
             lineRenderer.positionCount = 1;
             lineRenderer.SetPosition(0, transform.position);
         }
-
-        // Add listeners to pattern buttons
         for (int i = 0; i < displayPatternButtons.Length; i++)
         {
             int index = i;
             displayPatternButtons[i].onClick.AddListener(() => RemovePatternAtIndex(index));
         }
     }
-    
     private void Update()
     {
-        // Rotate the spiral when the mouse is down
         if (isMouseDownOnStartPattern)
         {
             CaldronManager.Instance.spiral.transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
         }
-
-        // Stop rotating the spiral when the queue is empty
         if (moveQueue.Count == 0)
         {
             isMouseDownOnStartPattern = false;
+            isMoving = false;
+        }
+        
+        if (EventSystem.current.currentSelectedGameObject == patternButton.gameObject && Input.GetMouseButton(0))
+        {
+            if (!isButtonPressed)
+            {
+                isButtonPressed = true;
+                OnStartPatternButtonPress();
+            }
+        }
+        else
+        {
+            isButtonPressed = false;
         }
     }
-    
     public void OnStartPatternButtonPress()
     {
         isMouseDownOnStartPattern = !isMouseDownOnStartPattern;
@@ -98,31 +105,28 @@ public class HexagonMover : MonoBehaviour
         {
             if (IsOnRightSpot() == true)
             {
-                //OPEN WÝN SCREEN
+                //OPEN Wï¿½N SCREEN
                 Debug.Log("sa");
                 return;
             }
             patternIndices.RemoveAt(0);
-            patternLengths.RemoveAt(0); // Remove the length of the finished pattern from patternLengths
+            patternLengths.RemoveAt(0);
             UpdatePatternDisplayButtons();
             UpdateLineRendererPreview();
             if (patternLengths.Count > 0)
             {
-                currentPatternMoveCount = patternLengths[0]; // Update the currentPatternMoveCount
+                currentPatternMoveCount = patternLengths[0];
             }
             isMoving = false;
         }
     }
-
     private void UpdateLineRendererPreview()
     {
         Vector3 currentPosition = transform.position;
         lineRenderer.positionCount = 1;
         lineRenderer.SetPosition(0, currentPosition);
-
         int remainingPatternMoveCount = currentPatternMoveCount;
         int currentPatternIndex = 0;
-
         foreach (Vector3 direction in moveQueue)
         {
             if (remainingPatternMoveCount <= 0)
@@ -137,10 +141,8 @@ public class HexagonMover : MonoBehaviour
                     break;
                 }
             }
-
             Vector3 hexagonOffset = GetHexagonOffset(direction);
             currentPosition += hexagonOffset;
-
             RaycastHit2D hit = Physics2D.Raycast(currentPosition, Vector2.zero);
             if (hit.collider != null)
             {
@@ -151,15 +153,11 @@ public class HexagonMover : MonoBehaviour
             {
                 break;
             }
-
             remainingPatternMoveCount--;
         }
     }
-
-
     private void MoveToNextHexagon()
     {
-
         if(moveQueue.Count < 1)
         {
             return;
@@ -167,27 +165,23 @@ public class HexagonMover : MonoBehaviour
         Vector3 direction = moveQueue.Dequeue();
         Vector3 startPosition = transform.position;
         Vector3 targetPosition = startPosition + GetHexagonOffset(direction);
-
         transform.DOMove(targetPosition, 0.5f).OnComplete(() =>
         {
             PrintCurrentHexagonColor();
             currentPatternMoveCount--;
-
             if (currentPatternMoveCount <= 0 && patternIndices.Count > 0)
             {
-                
                 patternIndices.RemoveAt(0);
-                patternLengths.RemoveAt(0); // Remove the length of the finished pattern from patternLengths
+                patternLengths.RemoveAt(0);
                 UpdatePatternDisplayButtons();
-
                 if (patternLengths.Count > 0)
                 {
-                    currentPatternMoveCount = patternLengths[0]; // Update the currentPatternMoveCount
+                    currentPatternMoveCount = patternLengths[0];
                 }
                 if (IsOnRightSpot() == true)
                 {
-                    //open win panel
                     Debug.Log("sa");
+                    ColorWheelController.Instance.isFinished = true; 
                     return;
                 }
             }
@@ -199,18 +193,8 @@ public class HexagonMover : MonoBehaviour
             {
                 isMoving = false;
             }
-
         }).SetEase(Ease.Linear);
-
-        /*
-        // LineRenderer'a yeni pozisyonu ekle
-        lineRenderer.positionCount++;
-        lineRenderer.SetPosition(lineRenderer.positionCount - 1, transform.position);
-        */
-
-
     }
-
     private void EnqueueDirections(Vector3[] directions, int patternIndex, Button pressedButton)
     {
         if (patternIndices.Count >= 3)
@@ -218,19 +202,16 @@ public class HexagonMover : MonoBehaviour
             Debug.Log("Pattern limit reached.");
             return;
         }
-
         if (patternIndices.Count < 3)
         {
             patternIndices.Add(patternIndex);
-            patternLengths.Add(directions.Length); // Add the length of the pattern to patternLengths
+            patternLengths.Add(directions.Length);
             MoveToEmptySpot(movingSprites[patternIndex], displayPatternButtons[patternIndices.Count - 1], directions,
                 pressedButton);
-
             foreach (Vector3 direction in directions)
             {
                 moveQueue.Enqueue(direction);
             }
-
             if (moveQueue.Count > 0 && patternIndices.Count == 1)
             {
                 currentPatternMoveCount = directions.Length;
@@ -239,26 +220,21 @@ public class HexagonMover : MonoBehaviour
             {
                 currentPatternMoveCount = 0;
             }
-
             UpdateLineRendererPreview();
             PrintMoveQueue();
         }
     }
-    
     private void RemovePatternAtIndex(int index)
     {
         if (index >= patternIndices.Count || isMoving)
         {
-            Debug.Log("Invalid pattern index.");
             return;
         }
-
         int patternIndexToRemove = patternIndices[index];
         Vector3[] patternToRemove = null;
-
         switch (patternIndexToRemove)
         {
-            case 0: // Red pattern
+            case 0:
                 patternToRemove = new Vector3[]
                 {
                     new Vector3(-1, 1, 0), // Left-Up
@@ -287,7 +263,6 @@ public class HexagonMover : MonoBehaviour
                 };
                 break;
         }
-
         if (patternToRemove != null)
         {
             for (int i = 0; i < patternToRemove.Length; i++)
@@ -298,8 +273,6 @@ public class HexagonMover : MonoBehaviour
                 }
             }
         }
-
-        //shift colors in deck
         for (int i = 0; i < patternIndices.Count; i++)
         {
             if (i > index)
@@ -310,8 +283,6 @@ public class HexagonMover : MonoBehaviour
                 MoveAndColorWhenReached(temp1, i);
             }
         }
-
-        //move removed one to 
         displayPatternButtons[index].image.color = Color.white;
         GameObject temp = Instantiate(movingSprites[patternIndices[index]], displayPatternButtons[index].transform);
         Vector3 aimedPos = ColorManager.Instance.sideButtonArray[patternIndices[index]].transform.position;
@@ -331,7 +302,6 @@ public class HexagonMover : MonoBehaviour
             UpdateLineRendererPreview();
         });
     }
-
     public void MoveAndColorWhenReached(GameObject objectToMove, int index)
     {
         objectToMove.transform.DOMove(displayPatternButtons[index - 1].transform.position, 0.5f).OnComplete(() =>
@@ -351,9 +321,6 @@ public class HexagonMover : MonoBehaviour
             }
         });
     }
-
-
-
     private Vector3 GetHexagonOffset(Vector3 direction)
     {
         Vector3 potentialOffset = Vector3.zero;
@@ -378,7 +345,6 @@ public class HexagonMover : MonoBehaviour
 
         return Vector3.zero;
     }
-
     private void PrintCurrentHexagonColor()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero);
@@ -387,14 +353,13 @@ public class HexagonMover : MonoBehaviour
             Hexagon hexagon = hit.collider.GetComponent<Hexagon>();
             if (hexagon != null)
             {
-                CaldronManager.Instance.water.color = hexagon.color;
-                CaldronManager.Instance.spiral.color = hexagon.color;
+                CaldronManager.Instance.water.DOColor(hexagon.color,0.5f);
+                CaldronManager.Instance.spiral.DOColor(hexagon.color,0.5f);
                 Debug.Log("Current hexagon color: " + hexagon.color);
                
             }
         }
     }
-
     private bool IsOnRightSpot()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero);
@@ -409,7 +374,6 @@ public class HexagonMover : MonoBehaviour
         }
         return false;
     }
-
     public void MoveToEmptySpot(GameObject movingColor, Button targetButton, Vector3[] directions, Button pressedButton)
     {
         GameObject temp = Instantiate(movingColor, pressedButton.gameObject.transform);
@@ -421,7 +385,6 @@ public class HexagonMover : MonoBehaviour
             UpdatePatternDisplayButtons();
         });
     }
-
     private void UpdatePatternDisplayButtons()
     {
         // Set all button colors to white
@@ -447,7 +410,6 @@ public class HexagonMover : MonoBehaviour
             }
         }
     }
-    
     public void EnqueueRedMoves()
     {
         if (isMoving || ColorManager.Instance.sideButtonArray[0].GetComponent<ColorButtonData>().colorAmount < 1)
@@ -472,13 +434,9 @@ public class HexagonMover : MonoBehaviour
             ColorManager.Instance.sideButtonArray[0].GetComponent<ColorButtonData>().numberText.text = ColorManager.Instance.sideButtonArray[0].GetComponent<ColorButtonData>().colorAmount.ToString();
             EnqueueDirections(patternDirections, 0, ColorManager.Instance.sideButtonArray[0].GetComponent<Button>());
         }
-
     }
-    
     public void EnqueueGreenMoves()
     {
-
-
         if (isMoving || ColorManager.Instance.sideButtonArray[1].GetComponent<ColorButtonData>().colorAmount < 0)
         {
             return;
@@ -500,7 +458,6 @@ public class HexagonMover : MonoBehaviour
             EnqueueDirections(patternDirections, 1, ColorManager.Instance.sideButtonArray[1].GetComponent<Button>());
         }
     }
-
     public void EnqueueBlueMoves()
     {
         if (isMoving || ColorManager.Instance.sideButtonArray[2].GetComponent<ColorButtonData>().colorAmount < 0)
@@ -525,7 +482,6 @@ public class HexagonMover : MonoBehaviour
             EnqueueDirections(patternDirections, 2, ColorManager.Instance.sideButtonArray[2].GetComponent<Button>());
         }
     }
-
     private void PrintMoveQueue()
     {
         Debug.Log("Move Queue:");

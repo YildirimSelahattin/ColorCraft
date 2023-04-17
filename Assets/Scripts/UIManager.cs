@@ -20,6 +20,6 @@ public class UIManager : MonoBehaviour
 
     public void NextLevel()
     {
-        GameDataManager.Instance.
+        
     }
 }

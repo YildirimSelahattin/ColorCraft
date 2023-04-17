@@ -20,6 +20,28 @@
             "amount":3
             }
             ]
+    },
+    {
+        "level":{
+            "levelType":"hexagon",
+            "levelParametres":[5]
+            },
+         "winIndex":5,
+         "colorsInLevel":[
+            {
+            "colorName":"red",
+            "amount":3
+            },
+            {
+            "colorName":"green",
+            "amount":3
+            },
+            {
+            "colorName":"blue",
+            "amount":3
+            }
+            ]
     }
+
     ]
 }

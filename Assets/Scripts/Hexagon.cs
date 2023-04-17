@@ -5,7 +5,7 @@ public class Hexagon : MonoBehaviour
 {
     public Color color;
     public List<Hexagon> neighbors = new List<Hexagon>(); // Komşuları depolamak için yeni liste
-
+    public int index;
     private SpriteRenderer spriteRenderer;
 
     private void Awake()

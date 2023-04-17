@@ -2562,3 +2562,6 @@ MonoBehaviour:
   hexagonPrefab: {fileID: 1425128839086806720, guid: 9521e0fe70577e64e8868890d7f4bcf7, type: 3}
   numberOfRings: 5
   hexagonSize: 0.232
+  targetImage: {fileID: 410027955}
+  hexagonList: []
+  textPrefab: {fileID: 6554820562688952700, guid: 2fd2b03c3b0a84a4f9c2a3601527e8c1, type: 3}

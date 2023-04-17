@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class ColorWheelController : MonoBehaviour
 {
     public GameObject hexagonPrefab;
     public int numberOfRings = 0;
     public float hexagonSize = 1f;
+    public Image targetImage;
+    public List<GameObject> hexagonList;
 
     private void Start()
     {
@@ -31,8 +33,11 @@ public class ColorWheelController : MonoBehaviour
                 hexagon.transform.localScale = Vector3.one * hexagonSize;
                 Color color = CalculateHexagonColor(ring, i);
                 hexagon.GetComponent<Hexagon>().SetColor(color);
+                hexagon.GetComponent<Hexagon>().index = ring*hexagonsInRing+i;
+                hexagonList.Add(hexagon);
             }
         }
+        targetImage.color = hexagonList[GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex].GetComponent<SpriteRenderer>().color;
     }
 
     private Vector3 CalculateHexagonPosition(int ring, int index)

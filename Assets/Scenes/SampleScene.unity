@@ -501,14 +501,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cfca8632bd2e3b74f8fbcdc92ff92671, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 431d4b83ec2903f44ad96f7bb65154fa, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -2405,7 +2405,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1688598817}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: -1}
   m_LocalScale: {x: 0.128, y: 0.128, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2562,3 +2562,5 @@ MonoBehaviour:
   hexagonPrefab: {fileID: 1425128839086806720, guid: 9521e0fe70577e64e8868890d7f4bcf7, type: 3}
   numberOfRings: 5
   hexagonSize: 0.232
+  targetImage: {fileID: 410027955}
+  hexagonList: []

@@ -33,15 +33,15 @@ public class ColorManager : MonoBehaviour
             {
                 case "red":
                     colorIndex = 0;
-                    colorButton.GetComponent<Image>().color = Color.red;
+                    colorButton.GetComponent<Image>().color = new Color(256/256f, 131/256f,131/256f);
                     break;
                 case "green":
                     colorIndex = 1;
-                    colorButton.GetComponent<Image>().color = Color.green;
+                    colorButton.GetComponent<Image>().color = new Color(131/256f, 131/256f,256/256f);
                     break;
                 case "blue":
                     colorIndex = 2;
-                    colorButton.GetComponent<Image>().color = Color.blue;
+                    colorButton.GetComponent<Image>().color = new Color(110/256f, 218/256f,140/256f);
                     break;
                 case "yellow":
                     colorIndex = 3;

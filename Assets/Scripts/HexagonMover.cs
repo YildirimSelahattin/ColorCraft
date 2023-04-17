@@ -323,13 +323,13 @@ public class HexagonMover : MonoBehaviour
             switch (patternIndices[index])
             {
                 case 0:
-                    displayPatternButtons[index - 1].image.color = Color.red;
+                    displayPatternButtons[index - 1].image.color = new Color(256/256f, 131/256f,131/256f);
                     break;
                 case 1:
-                    displayPatternButtons[index - 1].image.color = Color.green;
+                    displayPatternButtons[index - 1].image.color = new Color(110/256f, 218/256f,140/256f); 
                     break;
                 case 2:
-                    displayPatternButtons[index - 1].image.color = Color.blue;
+                    displayPatternButtons[index - 1].image.color = new Color(131/256f, 131/256f,256/256f);
                     break;
             }
         });
@@ -403,13 +403,13 @@ public class HexagonMover : MonoBehaviour
             switch (patternIndex)
             {
                 case 0:
-                    displayPatternButtons[i].image.color = Color.red;
+                    displayPatternButtons[i].image.color = new Color(256/256f, 131/256f,131/256f);
                     break;
                 case 1:
-                    displayPatternButtons[i].image.color = Color.green;
+                    displayPatternButtons[i].image.color = new Color(110 / 256f, 218 / 256f, 140 / 256f);
                     break;
                 case 2:
-                    displayPatternButtons[i].image.color = Color.blue;
+                    displayPatternButtons[i].image.color = new Color(131/256f, 131/256f,256/256f);
                     break;
             }
         }

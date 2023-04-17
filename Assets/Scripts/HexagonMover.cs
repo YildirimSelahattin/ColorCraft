@@ -78,7 +78,7 @@ public class HexagonMover : MonoBehaviour
             isMouseDownOnStartPattern = false;
             isMoving = false;
         }
-        
+    
         if (EventSystem.current.currentSelectedGameObject == patternButton.gameObject && Input.GetMouseButton(0))
         {
             if (!isButtonPressed)
@@ -87,7 +87,7 @@ public class HexagonMover : MonoBehaviour
                 OnStartPatternButtonPress();
             }
         }
-        else
+        else if (isButtonPressed && Input.GetMouseButtonUp(0))
         {
             isButtonPressed = false;
         }

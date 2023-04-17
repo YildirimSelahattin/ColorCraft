@@ -14,11 +14,9 @@ public class ColorWheelController : MonoBehaviour
     public List<GameObject> hexagonList;
     public GameObject textPrefab;
     public bool isFinished = false;
-
-    
-    public static ColorWheelController Instance;
     public bool isGettingTouch;
     public static bool loadDeckDirectly = false;
+    
     private void Start()
     {
      
@@ -49,8 +47,6 @@ public class ColorWheelController : MonoBehaviour
     {
         if (isFinished)
         {
-            Debug.Log("fasdfasdfasdfasdfasadfds");
-            isFinished = false;
             StartCoroutine(AnimateHexagons());
         }
     }

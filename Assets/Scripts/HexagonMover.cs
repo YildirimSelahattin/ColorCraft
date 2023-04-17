@@ -96,11 +96,16 @@ public class HexagonMover : MonoBehaviour
         }
         else
         {
+            if (IsOnRightSpot() == true)
+            {
+                //OPEN WÝN SCREEN
+                Debug.Log("sa");
+                return;
+            }
             patternIndices.RemoveAt(0);
             patternLengths.RemoveAt(0); // Remove the length of the finished pattern from patternLengths
             UpdatePatternDisplayButtons();
             UpdateLineRendererPreview();
-
             if (patternLengths.Count > 0)
             {
                 currentPatternMoveCount = patternLengths[0]; // Update the currentPatternMoveCount
@@ -154,6 +159,11 @@ public class HexagonMover : MonoBehaviour
 
     private void MoveToNextHexagon()
     {
+
+        if(moveQueue.Count < 1)
+        {
+            return;
+        }
         Vector3 direction = moveQueue.Dequeue();
         Vector3 startPosition = transform.position;
         Vector3 targetPosition = startPosition + GetHexagonOffset(direction);
@@ -165,6 +175,7 @@ public class HexagonMover : MonoBehaviour
 
             if (currentPatternMoveCount <= 0 && patternIndices.Count > 0)
             {
+                
                 patternIndices.RemoveAt(0);
                 patternLengths.RemoveAt(0); // Remove the length of the finished pattern from patternLengths
                 UpdatePatternDisplayButtons();
@@ -172,6 +183,12 @@ public class HexagonMover : MonoBehaviour
                 if (patternLengths.Count > 0)
                 {
                     currentPatternMoveCount = patternLengths[0]; // Update the currentPatternMoveCount
+                }
+                if (IsOnRightSpot() == true)
+                {
+                    //open win panel
+                    Debug.Log("sa");
+                    return;
                 }
             }
             if (isMouseDownOnStartPattern == true && moveQueue.Count > 0)
@@ -373,10 +390,26 @@ public class HexagonMover : MonoBehaviour
                 CaldronManager.Instance.water.color = hexagon.color;
                 CaldronManager.Instance.spiral.color = hexagon.color;
                 Debug.Log("Current hexagon color: " + hexagon.color);
+               
             }
         }
     }
-    
+
+    private bool IsOnRightSpot()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero);
+        if (hit.collider != null)
+        {
+            Hexagon hexagon = hit.collider.GetComponent<Hexagon>();
+            if (hexagon != null)
+            {
+                if (GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex == hexagon.index)
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void MoveToEmptySpot(GameObject movingColor, Button targetButton, Vector3[] directions, Button pressedButton)
     {
         GameObject temp = Instantiate(movingColor, pressedButton.gameObject.transform);
@@ -427,7 +460,6 @@ public class HexagonMover : MonoBehaviour
             {
                 ColorManager.Instance.sideButtonArray[0].GetComponent<ColorButtonData>().button.interactable = false;
             }
-            Debug.Log("sa");
             Vector3[] patternDirections =
             {
             new(-1, 1, 0), // Left-Up
@@ -457,7 +489,6 @@ public class HexagonMover : MonoBehaviour
             {
                 ColorManager.Instance.sideButtonArray[1].GetComponent<ColorButtonData>().button.interactable = false;
             }
-            Debug.Log("sa");
             Vector3[] patternDirections =
             {
             new(1, -1, 0), // Right-Down
@@ -482,7 +513,6 @@ public class HexagonMover : MonoBehaviour
             {
                 ColorManager.Instance.sideButtonArray[2].GetComponent<ColorButtonData>().button.interactable = false;
             }
-            Debug.Log("sa");
             Vector3[] patternDirections =
             {
             new(0, -1, 0), // Down

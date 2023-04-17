@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 public class ColorWheelController : MonoBehaviour
@@ -9,7 +10,7 @@ public class ColorWheelController : MonoBehaviour
     public float hexagonSize = 1f;
     public Image targetImage;
     public List<GameObject> hexagonList;
-
+    public GameObject textPrefab;
     private void Start()
     {
         if (GameDataManager.Instance.rawData.levelsArray[0].level.levelType == "hexagon")
@@ -21,6 +22,7 @@ public class ColorWheelController : MonoBehaviour
 
     private void CreateColorWheel()
     {
+        int index = 0;
         for (int ring = 0; ring < numberOfRings; ring++)
         {
             int hexagonsInRing = ring == 0 ? 1 : ring * 6;
@@ -33,8 +35,12 @@ public class ColorWheelController : MonoBehaviour
                 hexagon.transform.localScale = Vector3.one * hexagonSize;
                 Color color = CalculateHexagonColor(ring, i);
                 hexagon.GetComponent<Hexagon>().SetColor(color);
-                hexagon.GetComponent<Hexagon>().index = ring*hexagonsInRing+i;
+                hexagon.GetComponent<Hexagon>().index = index;
+                //FOR LEVEL PURPOSES
+                GameObject temp = Instantiate(textPrefab,hexagon.transform);
+                temp.GetComponent<TextMeshPro>().text = index.ToString();
                 hexagonList.Add(hexagon);
+                index++;
             }
         }
         targetImage.color = hexagonList[GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex].GetComponent<SpriteRenderer>().color;

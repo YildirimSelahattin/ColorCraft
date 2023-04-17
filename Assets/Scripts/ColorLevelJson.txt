@@ -5,19 +5,11 @@
             "levelType":"hexagon",
             "levelParametres":[5]
             },
-         "winIndex":3,
+         "winIndex":7,
          "colorsInLevel":[
             {
             "colorName":"red",
-            "amount":3
-            },
-            {
-            "colorName":"green",
-            "amount":3
-            },
-            {
-            "colorName":"blue",
-            "amount":3
+            "amount":1
             }
             ]
     },
@@ -26,19 +18,95 @@
             "levelType":"hexagon",
             "levelParametres":[5]
             },
-         "winIndex":5,
+         "winIndex":37,
          "colorsInLevel":[
             {
             "colorName":"red",
-            "amount":3
+            "amount":2
+            }
+            ]
+    },
+    {
+        "level":{
+            "levelType":"hexagon",
+            "levelParametres":[5]
+            },
+         "winIndex":11,
+         "colorsInLevel":[
+            {
+            "colorName":"green",
+            "amount":1
+            }
+            ]
+    },
+    {
+        "level":{
+            "levelType":"hexagon",
+            "levelParametres":[5]
+            },
+         "winIndex":45,
+         "colorsInLevel":[
+            {
+            "colorName":"green",
+            "amount":2
+            }
+            ]
+    },
+    {
+        "level":{
+            "levelType":"hexagon",
+            "levelParametres":[5]
+            },
+         "winIndex":15,
+         "colorsInLevel":[
+          
+            {
+            "colorName":"blue",
+            "amount":1
+            }
+            ]
+    },
+    {
+        "level":{
+            "levelType":"hexagon",
+            "levelParametres":[5]
+            },
+         "winIndex":53,
+         "colorsInLevel":[
+            
+            {
+            "colorName":"blue",
+            "amount":2
+            }
+            ]
+    },
+    {
+        "level":{
+            "levelType":"hexagon",
+            "levelParametres":[5]
+            },
+         "winIndex":9,
+         "colorsInLevel":[
+            {
+            "colorName":"red",
+            "amount":1
             },
             {
             "colorName":"green",
-            "amount":3
+            "amount":1
+            }
+            ]
+    },
+    {
+        "level":{
+            "levelType":"hexagon",
+            "levelParametres":[5]
             },
+         "winIndex":20,
+         "colorsInLevel":[
             {
-            "colorName":"blue",
-            "amount":3
+            "colorName":"red",
+            "amount":2
             }
             ]
     }

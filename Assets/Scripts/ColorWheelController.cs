@@ -14,16 +14,29 @@ public class ColorWheelController : MonoBehaviour
     public List<GameObject> hexagonList;
     public GameObject textPrefab;
     public bool isFinished = false;
+
     
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-    }
-    
+    public static ColorWheelController Instance;
+    public bool isGettingTouch;
+    public static bool loadDeckDirectly = false;
     private void Start()
+    {
+     
+        if(Instance== null)
+        {
+            Instance = this;    
+        }
+        if (loadDeckDirectly)
+        {
+            StartCreatingEnvironment(GameDataManager.Instance.currentLevel);
+            isGettingTouch = true;
+            loadDeckDirectly = false;
+        }
+
+    }
+
+    public void StartCreatingEnvironment(int levelNumber)
+       
     {
         if (GameDataManager.Instance.rawData.levelsArray[0].level.levelType == "hexagon")
         {

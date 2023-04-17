@@ -7,6 +7,7 @@ public class GameDataManager : MonoBehaviour
 {
     public DataList rawData;
     public static GameDataManager Instance;
+    public int totalLevelNumber;
     public TextAsset JSONText;
     public int currentLevel = 0;
     // Start is called before the first frame update
@@ -31,5 +32,6 @@ public class GameDataManager : MonoBehaviour
     public void LoadData()
     {
         rawData = JsonUtility.FromJson<DataList>(JSONText.text);
+        totalLevelNumber = rawData.levelsArray.Length;
     }
 }

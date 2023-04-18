@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 
 public class HexagonMover : MonoBehaviour
 {
+    bool isPathDrawing = false;
     [SerializeField] private GameObject startPatternSprite;
     public GameObject[] movingSprites;
     public bool isMoving = false;
@@ -69,6 +70,18 @@ public class HexagonMover : MonoBehaviour
     }
     private void Update()
     {
+        if (isPathDrawing && Input.GetMouseButton(0))
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            lineRenderer.positionCount++;
+            lineRenderer.SetPosition(lineRenderer.positionCount - 1, mousePosition);
+        }
+        else if (isPathDrawing && Input.GetMouseButtonUp(0))
+        {
+            isPathDrawing = false;
+            lineRenderer.positionCount = 0;
+        }
+        
         if (isMouseDownOnStartPattern)
         {
             CaldronManager.Instance.spiral.transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);

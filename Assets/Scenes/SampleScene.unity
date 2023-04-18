@@ -4453,6 +4453,7 @@ MonoBehaviour:
   - {fileID: 1315935402}
   patternIndices: 
   patternLengths: 
+  patternButton: {fileID: 805844616}
 --- !u!1 &1762086047
 GameObject:
   m_ObjectHideFlags: 0
@@ -5038,4 +5039,5 @@ MonoBehaviour:
   targetImage: {fileID: 410027955}
   hexagonList: []
   textPrefab: {fileID: 0}
+  isFinished: 0
   isGettingTouch: 0

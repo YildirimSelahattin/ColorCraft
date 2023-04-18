@@ -119,13 +119,14 @@ public class HexagonMover : MonoBehaviour
             if (IsOnRightSpot() == true)
             {
                 //OPEN W�N SCREEN
+                ColorWheelController.Instance.isFinished = true;
                 Debug.Log("sa");
                 return;
             }
             patternIndices.RemoveAt(0);
             patternLengths.RemoveAt(0);
             UpdatePatternDisplayButtons();
-            UpdateLineRendererPreview();
+            //UpdateLineRendererPreview();
             if (patternLengths.Count > 0)
             {
                 currentPatternMoveCount = patternLengths[0];

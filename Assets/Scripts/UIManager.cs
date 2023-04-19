@@ -16,6 +16,9 @@ public class UIManager : MonoBehaviour
     public GameObject player;
     public GameObject optionBar;
     public GameObject levelBar;
+    public GameObject startButton;
+    public GameObject optionButton;
+    public GameObject levelButton;
 
     public Button musicOn;
     public Button musicOff;
@@ -208,10 +211,16 @@ public class UIManager : MonoBehaviour
         if (optionBar.active)
          {
              optionBar.SetActive(false);
+             startButton.SetActive(true);
+             optionButton.SetActive(true);
+             levelButton.SetActive(true);
          }
          else
          {
              optionBar.SetActive(true);
+             startButton.SetActive(false);
+             optionButton.SetActive(false);
+             levelButton.SetActive(false);
          }
     }
     

@@ -10,6 +10,17 @@ public class GameDataManager : MonoBehaviour
     public int totalLevelNumber;
     public TextAsset JSONText;
     public int currentLevel = 0;
+    
+    public AudioClip breakSound;
+    public AudioClip crackSound;
+    public AudioClip winSound;
+    public AudioClip bossDamageSound;
+    public AudioClip collectSound;
+
+    public int playSound;
+    public int playMusic;
+    public int playVibrate;
+    
     // Start is called before the first frame update
     private void Awake()
     {

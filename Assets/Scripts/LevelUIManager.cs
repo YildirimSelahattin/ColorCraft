@@ -14,12 +14,7 @@ public class LevelUIManager : MonoBehaviour
     {
         CreateLevelPanels();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
     public void CreateLevelPanels()
     {
         int gridCounter = 0;

@@ -31,6 +31,7 @@ public class ColorWheelController : MonoBehaviour
             loadDeckDirectly = false;
         }
 
+        CreateColorWheel();
     }
 
     public void StartCreatingEnvironment(int levelNumber)

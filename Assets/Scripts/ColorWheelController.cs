@@ -17,6 +17,8 @@ public class ColorWheelController : MonoBehaviour
     public bool isGettingTouch;
     public static bool loadDeckDirectly = false;
     
+    public ColorPalette colorPalette;
+    
     private void Start()
     {
      
@@ -104,12 +106,10 @@ public class ColorWheelController : MonoBehaviour
             return Color.HSVToRGB(0f, 0f, 1f);
         }
 
-        float hue = (float)(index % (ring * 6)) / (ring * 6);
-        float saturation = (float)ring / numberOfRings;
-        float value = 1f;
-
-        return Color.HSVToRGB(hue, saturation, value);
+        // Paletten renk al
+        return colorPalette.GetColor(index);
     }
+    
     
     //for Camera
     public Vector2 GetBoundary()

@@ -15,17 +15,15 @@ public class UIManager : MonoBehaviour
     public GameObject levelSelectionScreen;
     public GameObject player;
     public GameObject optionBar;
-    public GameObject levelBar;
     public GameObject startButton;
     public GameObject optionButton;
     public GameObject levelButton;
+    public Image winTargetImage;
 
     public Button musicOn;
     public Button musicOff;
     public Button soundOn;
     public Button soundOff;
-    public Button vibrationOn;
-    public Button vibrationOff;
 
     int isSoundOn;
     int isMusicOn;
@@ -48,6 +46,7 @@ public class UIManager : MonoBehaviour
         else // load level directly
         {
             StartInGameLevelUI();
+            player.GetComponent<SpriteRenderer>().enabled = true;
         }
         
         UpdateSound();
@@ -75,6 +74,12 @@ public class UIManager : MonoBehaviour
         ColorWheelController.Instance.StartCreatingEnvironment(GameDataManager.Instance.currentLevel);
         StartInGameLevelUI();
         player.GetComponent<SpriteRenderer>().enabled = true;
+    }
+
+    public void HomeButton()
+    {
+        startScreen.SetActive(true);
+        inGameScreen.SetActive(false);
     }
     
     public void StartInGameLevelUI()
@@ -120,24 +125,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    /*
-    public void UpdateVibrate()
-    {
-        isVibrateOn = GameDataManager.Instance.playVibrate;
-        if (isVibrateOn == 0)
-        {
-            vibrationOff.gameObject.SetActive(true);
-            VibrationOff();
-        }
-
-        if (isVibrateOn == 1)
-        {
-            vibrationOn.gameObject.SetActive(true);
-            VibrationOn();
-        }
-    }
-    */
-    
     public void MusicOff()
     {
         GameDataManager.Instance.playMusic = 0;
@@ -180,28 +167,6 @@ public class UIManager : MonoBehaviour
         //UpdateSound();
     }
 
-    public void VibrationOff()
-    {
-        GameDataManager.Instance.playVibrate = 0;
-        vibrationOn.gameObject.SetActive(false);
-        vibrationOff.gameObject.SetActive(true);
-        Handheld.Vibrate();
-        PlayerPrefs.SetInt("PlayVibrateKey", GameDataManager.Instance.playVibrate);
-
-        //UpdateVibrate();
-    }
-
-    public void VibrationOn()
-    {
-        GameDataManager.Instance.playVibrate = 1;
-        vibrationOff.gameObject.SetActive(false);
-        vibrationOn.gameObject.SetActive(true);
-        Handheld.Vibrate();
-        PlayerPrefs.SetInt("PlayVibrateKey", GameDataManager.Instance.playVibrate);
-        //UpdateVibrate();
-
-    }
-
     public void VibratePhone()
     {
         Handheld.Vibrate();
@@ -225,7 +190,6 @@ public class UIManager : MonoBehaviour
          }
     }
     
-
     public void OpenLevelPanel()
     {
         levelSelectionScreen.SetActive(true);

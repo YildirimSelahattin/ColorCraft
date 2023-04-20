@@ -33,6 +33,7 @@ public class ColorWheelController : MonoBehaviour
 
         CreateColorWheel();
     }
+    
 
     public void StartCreatingEnvironment(int levelNumber)
        
@@ -76,6 +77,7 @@ public class ColorWheelController : MonoBehaviour
             }
         }
         targetImage.color = hexagonList[GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex].GetComponent<SpriteRenderer>().color;
+        UIManager.Instance.winTargetImage.color = hexagonList[GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex].GetComponent<SpriteRenderer>().color;
     }
     
     private Vector3 CalculateHexagonPosition(int ring, int index)

@@ -11,14 +11,5 @@ public class ColorButtonData : MonoBehaviour
     public string colorName;
     public int colorAmount;
     public TextMeshProUGUI numberText;
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

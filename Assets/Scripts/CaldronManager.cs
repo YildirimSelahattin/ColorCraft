@@ -16,6 +16,4 @@ public class CaldronManager : MonoBehaviour
             Instance = this;
         }
     }
-    
-    
 }

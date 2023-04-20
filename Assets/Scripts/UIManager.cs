@@ -52,7 +52,6 @@ public class UIManager : MonoBehaviour
         
         UpdateSound();
         UpdateMusic();
-        UpdateVibrate();
     }
 
     public void NextLevel()
@@ -121,6 +120,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    /*
     public void UpdateVibrate()
     {
         isVibrateOn = GameDataManager.Instance.playVibrate;
@@ -136,7 +136,8 @@ public class UIManager : MonoBehaviour
             VibrationOn();
         }
     }
-
+    */
+    
     public void MusicOff()
     {
         GameDataManager.Instance.playMusic = 0;
@@ -225,15 +226,14 @@ public class UIManager : MonoBehaviour
     }
     
 
-    public void OpenCloseLevelPanel()
+    public void OpenLevelPanel()
     {
-        if (optionBar.active)
-        {
-            levelBar.SetActive(false);
-        }
-        else
-        {
-            levelBar.SetActive(true);
-        }
+        levelSelectionScreen.SetActive(true);
+    }
+
+    public void CloseLevelPanel()
+    {
+        levelSelectionScreen.SetActive(false);
+        startScreen.SetActive(true);
     }
 }

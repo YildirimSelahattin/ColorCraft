@@ -118,12 +118,13 @@ public class HexagonMover : MonoBehaviour
         {
             if (IsOnRightSpot() == true)
             {
-                //OPEN W�N SCREEN
+                UIManager.Instance.winScreen.SetActive(true);
                 ColorWheelController.Instance.isFinished = true;
                 Debug.Log("sa");
                 return;
             }
-            patternIndices.RemoveAt(0);
+            if(patternIndices.Count > 0)
+                patternIndices.RemoveAt(0);
             patternLengths.RemoveAt(0);
             UpdatePatternDisplayButtons();
             //UpdateLineRendererPreview();
@@ -195,7 +196,8 @@ public class HexagonMover : MonoBehaviour
                 if (IsOnRightSpot() == true)
                 {
                     Debug.Log("sa");
-                    ColorWheelController.Instance.isFinished = true; 
+                    UIManager.Instance.winScreen.SetActive(true);
+                    ColorWheelController.Instance.isFinished = true;
                     return;
                 }
             }

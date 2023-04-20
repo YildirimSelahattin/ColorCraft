@@ -9,6 +9,13 @@ public class LevelUIManager : MonoBehaviour
     public GameObject levelButtonPrefab;
     public GameObject gridParent;
     public float gridWidth;
+    private Color32[] colors = {
+        new Color32 (255, 131, 131, 255),
+        new Color32 (164, 148, 255, 255),
+        new Color32 (131, 180, 255, 255),
+        new Color32 (110, 218, 140, 255),
+        new Color32 (255, 183, 117, 255)};
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +50,7 @@ public class LevelUIManager : MonoBehaviour
                 LevelButtonManager buttonScript = levelButton.GetComponent<LevelButtonManager>();
                 buttonScript.levelIndex = index;
                 buttonScript.levelNumberText.text = index.ToString();
+                buttonScript.levelNumberText.color = colors[i%5];
 
                 if (index > GameDataManager.Instance.currentLevel)
                 {

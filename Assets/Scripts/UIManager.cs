@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour
         }
 
         player.GetComponent<SpriteRenderer>().enabled = false;
-
+ 
         if (goStartPage == true)
         {
             startScreen.SetActive(true);
@@ -52,6 +52,7 @@ public class UIManager : MonoBehaviour
         UpdateSound();
         UpdateMusic();
     }
+
 
     public void NextLevel()
     {

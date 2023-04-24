@@ -16,13 +16,15 @@ public class ColorWheelController : MonoBehaviour
     public bool isFinished = false;
     public bool isGettingTouch;
     public static bool loadDeckDirectly = false;
-    
+    Color targetColor;
+    public Sprite targetSpriteTexture;
+
     private void Start()
     {
-     
-        if(Instance== null)
+
+        if (Instance == null)
         {
-            Instance = this;    
+            Instance = this;
         }
         if (loadDeckDirectly)
         {
@@ -33,10 +35,10 @@ public class ColorWheelController : MonoBehaviour
 
         CreateColorWheel();
     }
-    
+
 
     public void StartCreatingEnvironment(int levelNumber)
-       
+
     {
         if (GameDataManager.Instance.rawData.levelsArray[0].level.levelType == "hexagon")
         {
@@ -44,7 +46,7 @@ public class ColorWheelController : MonoBehaviour
             CreateColorWheel();
         }
     }
-    
+
     private void Update()
     {
         if (isFinished)
@@ -56,13 +58,14 @@ public class ColorWheelController : MonoBehaviour
     private void CreateColorWheel()
     {
         int index = 0;
+        int targetIndex = GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex;
         for (int ring = 0; ring < numberOfRings; ring++)
         {
             int hexagonsInRing = ring == 0 ? 1 : ring * 6;
 
             for (int i = 0; i < hexagonsInRing; i++)
             {
-              
+
                 GameObject hexagon = Instantiate(hexagonPrefab);
                 hexagon.transform.SetParent(transform);
                 hexagon.transform.localPosition = CalculateHexagonPosition(ring, i);
@@ -70,6 +73,14 @@ public class ColorWheelController : MonoBehaviour
                 Color color = CalculateHexagonColor(ring, i);
                 hexagon.GetComponent<Hexagon>().SetColor(color);
                 hexagon.GetComponent<Hexagon>().index = index;
+
+                if (index == targetIndex)
+                {
+                    targetColor = hexagon.GetComponent<SpriteRenderer>().color;
+                    hexagon.GetComponent<SpriteRenderer>().color = Color.white;
+                    hexagon.GetComponent<SpriteRenderer>().sprite = targetSpriteTexture;
+                }
+
                 //FOR LEVEL PURPOSES
                 //GameObject temp = Instantiate(textPrefab,hexagon.transform);
                 //temp.GetComponent<TextMeshPro>().text = index.ToString();
@@ -77,12 +88,11 @@ public class ColorWheelController : MonoBehaviour
                 index++;
             }
         }
-        targetImage.color = hexagonList[GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex].GetComponent<SpriteRenderer>().color;
-        UIManager.Instance.winTargetImage.color = hexagonList[GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex].GetComponent<SpriteRenderer>().color;
-        Debug.Log("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq: " + hexagonList[GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex].GetComponent<SpriteRenderer>().color);
-        hexagonList[GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex].GetComponent<SpriteRenderer>().color = Color.black;
+        targetImage.color = targetColor;
+        UIManager.Instance.winTargetImage.color = targetColor;
     }
-    
+
+
     private Vector3 CalculateHexagonPosition(int ring, int index)
     {
         if (ring == 0)
@@ -113,7 +123,7 @@ public class ColorWheelController : MonoBehaviour
 
         return Color.HSVToRGB(hue, saturation, value);
     }
-    
+
     //for Camera
     public Vector2 GetBoundary()
     {
@@ -121,12 +131,12 @@ public class ColorWheelController : MonoBehaviour
         float verticalBoundary = numberOfRings * hexagonSize * 0.755f;
         return new Vector2(horizontalBoundary, verticalBoundary);
     }
-    
+
     public float GetOuterRadius()
     {
         return numberOfRings * hexagonSize;
     }
-    
+
     private IEnumerator ScaleHexagon(GameObject hexagon, float targetScale, float duration, float posZ)
     {
         Vector3 initialScale = hexagon.transform.localScale;
@@ -150,13 +160,13 @@ public class ColorWheelController : MonoBehaviour
         float scaleFactor = .3f;
         float animationDuration = 0.02f;
         float posZ = 0;
-        
+
         foreach (GameObject hexagon in hexagonList)
         {
             posZ -= 5f;
-            StartCoroutine(ScaleHexagon(hexagon, scaleFactor, animationDuration,posZ));
+            StartCoroutine(ScaleHexagon(hexagon, scaleFactor, animationDuration, posZ));
             yield return new WaitForSeconds(delayBetweenHexagons);
-            StartCoroutine(ScaleHexagon(hexagon, hexagonSize, animationDuration,posZ));
+            StartCoroutine(ScaleHexagon(hexagon, hexagonSize, animationDuration, posZ));
         }
     }
 }

@@ -6920,3 +6920,4 @@ MonoBehaviour:
   textPrefab: {fileID: 0}
   isFinished: 0
   isGettingTouch: 0
+  targetSpriteTexture: {fileID: 21300000, guid: 7386e444f3c80354180bd90c84151d32, type: 3}

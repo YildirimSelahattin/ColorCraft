@@ -63,6 +63,7 @@ public class UIManager : MonoBehaviour
         GameDataManager.Instance.currentLevel++;
         SceneManager.LoadScene(0);
         player.GetComponent<SpriteRenderer>().enabled = true;
+        GameDataManager.Instance.SaveData();
     }
 
     public void RestartLevel()

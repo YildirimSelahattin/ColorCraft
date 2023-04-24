@@ -38,12 +38,11 @@ public class ColorWheelController : MonoBehaviour
 
 
     public void StartCreatingEnvironment(int levelNumber)
-
     {
-        if (GameDataManager.Instance.rawData.levelsArray[0].level.levelType == "hexagon")
+        if (GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].level.levelType == "hexagon")
         {
-            numberOfRings = 17;
             CreateColorWheel();
+            
         }
     }
 

@@ -109,16 +109,9 @@ public class HexagonMover : MonoBehaviour
         }
         else
         {
-            if (IsOnRightSpot() == true)
-            {
-                UIManager.Instance.winScreen.SetActive(true);
-                ColorWheelController.Instance.isFinished = true;
-                Debug.Log("sa");
-                return;
-            }
             if(patternIndices.Count > 0)
-                patternIndices.RemoveAt(0);
-            patternLengths.RemoveAt(0);
+            patternIndices.RemoveAt(0);
+            //patternLengths.RemoveAt(0);
             UpdatePatternDisplayButtons();
             //UpdateLineRendererPreview();
             if (patternLengths.Count > 0)
@@ -185,13 +178,6 @@ public class HexagonMover : MonoBehaviour
                 if (patternLengths.Count > 0)
                 {
                     currentPatternMoveCount = patternLengths[0];
-                }
-                if (IsOnRightSpot() == true)
-                {
-                    Debug.Log("sa");
-                    UIManager.Instance.winScreen.SetActive(true);
-                    ColorWheelController.Instance.isFinished = true;
-                    return;
                 }
             }
             if (isMouseDownOnStartPattern == true && moveQueue.Count > 0)
@@ -364,8 +350,17 @@ public class HexagonMover : MonoBehaviour
             {
                 CaldronManager.Instance.water.DOColor(hexagon.color,0.5f);
                 CaldronManager.Instance.spiral.DOColor(hexagon.color,0.5f);
+
                 Debug.Log("Current hexagon color: " + hexagon.color);
-               
+
+                //EndGame
+                if (IsOnRightSpot() == true)
+                {
+                    
+                    UIManager.Instance.winScreen.SetActive(true);
+                    ColorWheelController.Instance.isFinished = true;
+                    return;
+                }
             }
         }
     }

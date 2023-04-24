@@ -9,15 +9,15 @@
          "colorsInLevel":[
             {
             "colorName":"red",
-            "amount":4
+            "amount":1
             },
             {
             "colorName":"green",
-            "amount":4
+            "amount":1
             },
             {
             "colorName":"blue",
-            "amount":4
+            "amount":1
             }
             ]
     },
@@ -104,9 +104,9 @@
             "amount":4
             },
             {
-                        "colorName":"blue",
-                        "amount":4
-                        }
+            "colorName":"blue",
+            "amount":4
+            }
             ]
     },
     {

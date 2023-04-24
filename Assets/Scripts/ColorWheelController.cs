@@ -62,6 +62,7 @@ public class ColorWheelController : MonoBehaviour
 
             for (int i = 0; i < hexagonsInRing; i++)
             {
+              
                 GameObject hexagon = Instantiate(hexagonPrefab);
                 hexagon.transform.SetParent(transform);
                 hexagon.transform.localPosition = CalculateHexagonPosition(ring, i);
@@ -78,6 +79,8 @@ public class ColorWheelController : MonoBehaviour
         }
         targetImage.color = hexagonList[GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex].GetComponent<SpriteRenderer>().color;
         UIManager.Instance.winTargetImage.color = hexagonList[GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex].GetComponent<SpriteRenderer>().color;
+        Debug.Log("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq: " + hexagonList[GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex].GetComponent<SpriteRenderer>().color);
+        hexagonList[GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex].GetComponent<SpriteRenderer>().color = Color.black;
     }
     
     private Vector3 CalculateHexagonPosition(int ring, int index)

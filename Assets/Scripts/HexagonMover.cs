@@ -11,19 +11,12 @@ public class HexagonMover : MonoBehaviour
     public GameObject[] movingSprites;
     public bool isMoving = false;
     public bool isMouseDownOnStartPattern = false;
-    private bool isProcessingMoveQueue = false;
     public Queue<Vector3> moveQueue = new Queue<Vector3>();
-    private int moveQueueIndex = 0;
-    [SerializeField] private LineRenderer lineRenderer;
-    private float elapsedTime;
-    private float rotationElapsedTime;
-    private float movementTimer = 0f;
+    public LineRenderer lineRenderer;
     [SerializeField] private float rotationSpeed = 60f;
-    private float movementProgress = 0f;
     [SerializeField] private Button[] displayPatternButtons = new Button[3];
     public List<int> patternIndices = new List<int>();
     public List<int> patternLengths = new List<int>();
-    private bool isCurrentPatternFinished = false;
     private int currentPatternMoveCount = 0;
     public static HexagonMover Instance;
     

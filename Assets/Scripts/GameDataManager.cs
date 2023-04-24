@@ -30,16 +30,7 @@ public class GameDataManager : MonoBehaviour
         }
         LoadData();
     }
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     public void LoadData()
     {
         rawData = JsonUtility.FromJson<DataList>(JSONText.text);

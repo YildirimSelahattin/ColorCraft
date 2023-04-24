@@ -32,12 +32,14 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         if (Instance == null)
         {
             Instance = this;
         }
 
         player.GetComponent<SpriteRenderer>().enabled = false;
+       
  
         if (goStartPage == true)
         {
@@ -75,12 +77,15 @@ public class UIManager : MonoBehaviour
         ColorWheelController.Instance.StartCreatingEnvironment(GameDataManager.Instance.currentLevel);
         StartInGameLevelUI();
         player.GetComponent<SpriteRenderer>().enabled = true;
+        
     }
 
     public void HomeButton()
     {
         startScreen.SetActive(true);
         inGameScreen.SetActive(false);
+        winScreen.SetActive(false);
+        player.GetComponent<SpriteRenderer>().enabled = false;
     }
     
     public void StartInGameLevelUI()

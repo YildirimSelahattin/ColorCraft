@@ -10,11 +10,11 @@ public class GameDataManager : MonoBehaviour
     public int totalLevelNumber;
     public TextAsset JSONText;
     public int currentLevel = 0;
-    public AudioClip breakSound;
-    public AudioClip crackSound;
+    public AudioClip colorSelectSound;
+    public AudioClip colorDeselectSound;
     public AudioClip winSound;
-    public AudioClip bossDamageSound;
-    public AudioClip collectSound;
+    public AudioClip blenderSound;
+    public AudioClip uiClickSound;
 
     public int playSound;
     public int playMusic;

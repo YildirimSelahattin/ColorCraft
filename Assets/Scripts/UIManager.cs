@@ -24,7 +24,7 @@ public class UIManager : MonoBehaviour
     public Button musicOff;
     public Button soundOn;
     public Button soundOff;
-
+    public GameObject GameMusic;
     int isSoundOn;
     int isMusicOn;
     int isVibrateOn;
@@ -63,21 +63,26 @@ public class UIManager : MonoBehaviour
         GameDataManager.Instance.currentLevel++;
         SceneManager.LoadScene(0);
         GameDataManager.Instance.SaveData();
+        PlayUISound();
+
     }
 
     public void RestartLevel()
     {
         SceneManager.LoadScene(0);
         player.GetComponent<SpriteRenderer>().enabled = true;
+        PlayUISound();
+
     }
-    
+
 
     public void OnStartButtonClicked()
     {
         ColorWheelController.Instance.StartCreatingEnvironment(GameDataManager.Instance.currentLevel);
         StartInGameLevelUI();
         player.GetComponent<SpriteRenderer>().enabled = true;
-        
+        PlayUISound();
+
     }
 
     public void HomeButton()
@@ -86,6 +91,7 @@ public class UIManager : MonoBehaviour
         inGameScreen.SetActive(false);
         winScreen.SetActive(false);
         player.GetComponent<SpriteRenderer>().enabled = false;
+        PlayUISound();
     }
     
     public void StartInGameLevelUI()
@@ -98,6 +104,7 @@ public class UIManager : MonoBehaviour
     {
         levelSelectionScreen.SetActive(true);
         startScreen.SetActive(false);
+        PlayUISound();
     }
 
     public void UpdateSound()
@@ -136,10 +143,11 @@ public class UIManager : MonoBehaviour
         GameDataManager.Instance.playMusic = 0;
         musicOn.gameObject.SetActive(false);
         musicOff.gameObject.SetActive(true);
-        //GameMusic.SetActive(false);
+        GameMusic.SetActive(false);
         PlayerPrefs.SetInt("PlayMusicKey", GameDataManager.Instance.playMusic);
 
         //UpdateMusic();
+        PlayUISound();
     }
 
     public void MusicOn()
@@ -147,10 +155,11 @@ public class UIManager : MonoBehaviour
         GameDataManager.Instance.playMusic = 1;
         musicOff.gameObject.SetActive(false);
         musicOn.gameObject.SetActive(true);
-        //GameMusic.SetActive(true);
+        GameMusic.SetActive(true);
         PlayerPrefs.SetInt("PlayMusicKey", GameDataManager.Instance.playMusic);
 
         //UpdateMusic();
+        PlayUISound();
     }
 
     public void SoundsOff()
@@ -161,6 +170,7 @@ public class UIManager : MonoBehaviour
         PlayerPrefs.SetInt("PlaySoundKey", GameDataManager.Instance.playSound);
 
         //UpdateSound();
+        PlayUISound();
     }
 
     public void SoundsOn()
@@ -171,6 +181,7 @@ public class UIManager : MonoBehaviour
         PlayerPrefs.SetInt("PlaySoundKey", GameDataManager.Instance.playSound);
 
         //UpdateSound();
+        PlayUISound();
     }
 
     public void VibratePhone()
@@ -194,5 +205,15 @@ public class UIManager : MonoBehaviour
              optionButton.SetActive(false);
              levelButton.SetActive(false);
          }
+        PlayUISound();
+    }
+    public void PlayUISound()
+    {
+        if (GameDataManager.Instance.playSound == 1)
+        {
+            GameObject sound = new GameObject("sound");
+            sound.AddComponent<AudioSource>().PlayOneShot(GameDataManager.Instance.uiClickSound);
+            Destroy(sound, GameDataManager.Instance.uiClickSound.length); // Creates new object, add to it audio source, play sound, destroy this object after playing is done
+        }
     }
 }

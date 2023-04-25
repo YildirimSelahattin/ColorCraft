@@ -221,6 +221,12 @@ public class HexagonMover : MonoBehaviour
         {
             return;
         }
+        if (GameDataManager.Instance.playSound == 1)
+        {
+            GameObject sound = new GameObject("sound");
+            sound.AddComponent<AudioSource>().PlayOneShot(GameDataManager.Instance.colorDeselectSound);
+            Destroy(sound, GameDataManager.Instance.colorDeselectSound.length); // Creates new object, add to it audio source, play sound, destroy this object after playing is done
+        }
         int patternIndexToRemove = patternIndices[index];
         Vector3[] patternToRemove = null;
         switch (patternIndexToRemove)
@@ -352,7 +358,12 @@ public class HexagonMover : MonoBehaviour
                 //EndGame
                 if (IsOnRightSpot() == true)
                 {
-                    
+                    if (GameDataManager.Instance.playSound == 1)
+                    {
+                        GameObject sound = new GameObject("sound");
+                        sound.AddComponent<AudioSource>().PlayOneShot(GameDataManager.Instance.winSound);
+                        Destroy(sound, GameDataManager.Instance.winSound.length); // Creates new object, add to it audio source, play sound, destroy this object after playing is done
+                    }
                     UIManager.Instance.winScreen.SetActive(true);
                     ColorWheelController.Instance.isFinished = true;
                     return;
@@ -418,6 +429,12 @@ public class HexagonMover : MonoBehaviour
         }
         else
         {
+            if (GameDataManager.Instance.playSound == 1)
+            {
+                GameObject sound = new GameObject("sound");
+                sound.AddComponent<AudioSource>().PlayOneShot(GameDataManager.Instance.colorSelectSound);
+                Destroy(sound, GameDataManager.Instance.colorSelectSound.length); // Creates new object, add to it audio source, play sound, destroy this object after playing is done
+            }
             if (ColorManager.Instance.sideButtonArray[0].GetComponent<ColorButtonData>().colorAmount == 1)
             {
                 ColorManager.Instance.sideButtonArray[0].GetComponent<ColorButtonData>().button.interactable = false;
@@ -441,8 +458,15 @@ public class HexagonMover : MonoBehaviour
         {
             return;
         }
+
         else
         {
+            if (GameDataManager.Instance.playSound == 1)
+            {
+                GameObject sound = new GameObject("sound");
+                sound.AddComponent<AudioSource>().PlayOneShot(GameDataManager.Instance.colorSelectSound);
+                Destroy(sound, GameDataManager.Instance.colorSelectSound.length); // Creates new object, add to it audio source, play sound, destroy this object after playing is done
+            }
             if (ColorManager.Instance.sideButtonArray[1].GetComponent<ColorButtonData>().colorAmount == 1)
             {
                 ColorManager.Instance.sideButtonArray[1].GetComponent<ColorButtonData>().button.interactable = false;
@@ -466,6 +490,12 @@ public class HexagonMover : MonoBehaviour
         }
         else
         {
+            if (GameDataManager.Instance.playSound == 1)
+            {
+                GameObject sound = new GameObject("sound");
+                sound.AddComponent<AudioSource>().PlayOneShot(GameDataManager.Instance.colorSelectSound);
+                Destroy(sound, GameDataManager.Instance.colorSelectSound.length); // Creates new object, add to it audio source, play sound, destroy this object after playing is done
+            }
             if (ColorManager.Instance.sideButtonArray[2].GetComponent<ColorButtonData>().colorAmount == 1)
             {
                 ColorManager.Instance.sideButtonArray[2].GetComponent<ColorButtonData>().button.interactable = false;

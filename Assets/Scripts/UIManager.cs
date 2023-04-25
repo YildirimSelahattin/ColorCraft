@@ -28,19 +28,17 @@ public class UIManager : MonoBehaviour
     int isSoundOn;
     int isMusicOn;
     int isVibrateOn;
-    
+
     // Start is called before the first frame update
     void Start()
     {
-        
         if (Instance == null)
         {
             Instance = this;
         }
 
         player.GetComponent<SpriteRenderer>().enabled = false;
-       
- 
+
         if (goStartPage == true)
         {
             startScreen.SetActive(true);
@@ -50,7 +48,7 @@ public class UIManager : MonoBehaviour
             StartInGameLevelUI();
             player.GetComponent<SpriteRenderer>().enabled = true;
         }
-        
+
         UpdateSound();
         UpdateMusic();
     }
@@ -64,7 +62,6 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene(0);
         GameDataManager.Instance.SaveData();
         PlayUISound();
-
     }
 
     public void RestartLevel()
@@ -72,9 +69,7 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene(0);
         player.GetComponent<SpriteRenderer>().enabled = true;
         PlayUISound();
-
     }
-
 
     public void OnStartButtonClicked()
     {
@@ -82,7 +77,6 @@ public class UIManager : MonoBehaviour
         StartInGameLevelUI();
         player.GetComponent<SpriteRenderer>().enabled = true;
         PlayUISound();
-
     }
 
     public void HomeButton()
@@ -93,7 +87,7 @@ public class UIManager : MonoBehaviour
         player.GetComponent<SpriteRenderer>().enabled = false;
         PlayUISound();
     }
-    
+
     public void StartInGameLevelUI()
     {
         startScreen.SetActive(false);
@@ -102,9 +96,18 @@ public class UIManager : MonoBehaviour
 
     public void OnLevelsButtonClicked()
     {
-        levelSelectionScreen.SetActive(true);
-        startScreen.SetActive(false);
-        PlayUISound();
+        if (levelSelectionScreen.active)
+        {
+            levelSelectionScreen.SetActive(false);
+            startScreen.SetActive(true);
+            PlayUISound();
+        }
+        else
+        {
+            levelSelectionScreen.SetActive(true);
+            startScreen.SetActive(false);
+            PlayUISound();
+        }
     }
 
     public void UpdateSound()
@@ -192,19 +195,19 @@ public class UIManager : MonoBehaviour
     public void OpenCloseOptionBar()
     {
         if (optionBar.active)
-         {
-             optionBar.SetActive(false);
-             startButton.SetActive(true);
-             optionButton.SetActive(true);
-             levelButton.SetActive(true);
-         }
-         else
-         {
-             optionBar.SetActive(true);
-             startButton.SetActive(false);
-             optionButton.SetActive(false);
-             levelButton.SetActive(false);
-         }
+        {
+            optionBar.SetActive(false);
+            startButton.SetActive(true);
+            optionButton.SetActive(true);
+            levelButton.SetActive(true);
+        }
+        else
+        {
+            optionBar.SetActive(true);
+            startButton.SetActive(false);
+            optionButton.SetActive(false);
+            levelButton.SetActive(false);
+        }
         PlayUISound();
     }
     public void PlayUISound()

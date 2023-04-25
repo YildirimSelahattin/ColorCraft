@@ -21,7 +21,6 @@ public class ColorWheelController : MonoBehaviour
 
     private void Start()
     {
-
         if (Instance == null)
         {
             Instance = this;
@@ -32,8 +31,6 @@ public class ColorWheelController : MonoBehaviour
             isGettingTouch = true;
             loadDeckDirectly = false;
         }
-
-        CreateColorWheel();
     }
 
 
@@ -42,7 +39,6 @@ public class ColorWheelController : MonoBehaviour
         if (GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].level.levelType == "hexagon")
         {
             CreateColorWheel();
-            
         }
     }
 
@@ -79,10 +75,6 @@ public class ColorWheelController : MonoBehaviour
                     hexagon.GetComponent<SpriteRenderer>().color = Color.white;
                     hexagon.GetComponent<SpriteRenderer>().sprite = targetSpriteTexture;
                 }
-
-                //FOR LEVEL PURPOSES
-                //GameObject temp = Instantiate(textPrefab,hexagon.transform);
-                //temp.GetComponent<TextMeshPro>().text = index.ToString();
                 hexagonList.Add(hexagon);
                 index++;
             }

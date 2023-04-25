@@ -19,10 +19,10 @@ public class HexagonMover : MonoBehaviour
     public List<int> patternLengths = new List<int>();
     private int currentPatternMoveCount = 0;
     public static HexagonMover Instance;
-    
+
     private bool isButtonPressed = false;
     public Button patternButton;
-    
+
     private void Awake()
     {
         if (Instance == null)
@@ -30,6 +30,7 @@ public class HexagonMover : MonoBehaviour
             Instance = this;
         }
     }
+
     public void StartFunctions()
     {
         for (int colorCounter = 0; colorCounter < ColorManager.Instance.sideButtonArray.Length; colorCounter++)
@@ -61,6 +62,7 @@ public class HexagonMover : MonoBehaviour
             displayPatternButtons[i].onClick.AddListener(() => RemovePatternAtIndex(index));
         }
     }
+
     private void Update()
     {
         if (isPathDrawing && Input.GetMouseButton(0))
@@ -74,7 +76,7 @@ public class HexagonMover : MonoBehaviour
             isPathDrawing = false;
             lineRenderer.positionCount = 0;
         }
-        
+
         if (isMouseDownOnStartPattern)
         {
             CaldronManager.Instance.spiral.transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
@@ -84,7 +86,7 @@ public class HexagonMover : MonoBehaviour
             isMouseDownOnStartPattern = false;
             isMoving = false;
         }
-    
+
         if (EventSystem.current.currentSelectedGameObject == patternButton.gameObject && Input.GetMouseButton(0))
         {
             if (!isButtonPressed)
@@ -98,19 +100,57 @@ public class HexagonMover : MonoBehaviour
             isButtonPressed = false;
         }
     }
+
+    private void MoveToNextHexagon()
+    {
+        if (moveQueue.Count < 1)
+        {
+            return;
+        }
+        isMoving = true;
+        Vector3 direction = moveQueue.Dequeue();
+        Vector3 startPosition = transform.position;
+        Vector3 targetPosition = startPosition + GetHexagonOffset(direction);
+        transform.DOMove(targetPosition, 0.5f).OnComplete(() =>
+        {
+            PrintCurrentHexagonColor();
+            currentPatternMoveCount--;
+            if (currentPatternMoveCount <= 0 && patternIndices.Count > 0)
+            {
+                isMoving = false;
+                patternIndices.RemoveAt(0);
+                patternLengths.RemoveAt(0);
+                UpdatePatternDisplayButtons();
+                if (patternLengths.Count > 0)
+                {
+                    currentPatternMoveCount = patternLengths[0];
+                }
+            }
+            if (isMouseDownOnStartPattern == true && moveQueue.Count > 0)
+            {
+                MoveToNextHexagon();
+            }
+            else
+            {
+                isMoving = false;
+            }
+        }).SetEase(Ease.Linear);
+    }
+
     public void OnStartPatternButtonPress()
     {
         isMouseDownOnStartPattern = !isMouseDownOnStartPattern;
-        
-        if (isMouseDownOnStartPattern == true)
+
+        if (isMouseDownOnStartPattern == true && !isMoving)
         {
             isMoving = true;
+            
             MoveToNextHexagon();
         }
         else
         {
-            if(patternIndices.Count > 0)
-            patternIndices.RemoveAt(0);
+            if (patternIndices.Count > 0)
+                patternIndices.RemoveAt(0);
             //patternLengths.RemoveAt(0);
             UpdatePatternDisplayButtons();
             //UpdateLineRendererPreview();
@@ -118,7 +158,6 @@ public class HexagonMover : MonoBehaviour
             {
                 currentPatternMoveCount = patternLengths[0];
             }
-            isMoving = false;
         }
     }
     private void UpdateLineRendererPreview()
@@ -157,42 +196,10 @@ public class HexagonMover : MonoBehaviour
             remainingPatternMoveCount--;
         }
     }
-    private void MoveToNextHexagon()
-    {
-        if(moveQueue.Count < 1)
-        {
-            return;
-        }
-        Vector3 direction = moveQueue.Dequeue();
-        Vector3 startPosition = transform.position;
-        Vector3 targetPosition = startPosition + GetHexagonOffset(direction);
-        transform.DOMove(targetPosition, 0.5f).OnComplete(() =>
-        {
-            PrintCurrentHexagonColor();
-            currentPatternMoveCount--;
-            if (currentPatternMoveCount <= 0 && patternIndices.Count > 0)
-            {
-                patternIndices.RemoveAt(0);
-                patternLengths.RemoveAt(0);
-                UpdatePatternDisplayButtons();
-                if (patternLengths.Count > 0)
-                {
-                    currentPatternMoveCount = patternLengths[0];
-                }
-            }
-            if (isMouseDownOnStartPattern == true && moveQueue.Count > 0)
-            {
-                MoveToNextHexagon();
-            }
-            else
-            {
-                isMoving = false;
-            }
-        }).SetEase(Ease.Linear);
-    }
+    
     private void EnqueueDirections(Vector3[] directions, int patternIndex, Button pressedButton)
     {
-        
+
         if (patternIndices.Count < 3)
         {
             patternIndices.Add(patternIndex);
@@ -283,7 +290,7 @@ public class HexagonMover : MonoBehaviour
         displayPatternButtons[index].image.color = Color.white;
         GameObject temp = Instantiate(movingSprites[patternIndices[index]], displayPatternButtons[index].transform);
         Vector3 aimedPos = ColorManager.Instance.sideButtonArray[patternIndices[index]].transform.position;
-        
+
         temp.transform.localRotation = new Quaternion(0, 0, 90, 0);
         temp.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.5f);
 
@@ -307,13 +314,13 @@ public class HexagonMover : MonoBehaviour
             switch (patternIndices[index])
             {
                 case 0:
-                    displayPatternButtons[index - 1].image.color = new Color(256/256f, 131/256f,131/256f);
+                    displayPatternButtons[index - 1].image.color = new Color(256 / 256f, 131 / 256f, 131 / 256f);
                     break;
                 case 1:
-                    displayPatternButtons[index - 1].image.color = new Color(110/256f, 218/256f,140/256f); 
+                    displayPatternButtons[index - 1].image.color = new Color(110 / 256f, 218 / 256f, 140 / 256f);
                     break;
                 case 2:
-                    displayPatternButtons[index - 1].image.color = new Color(131/256f, 131/256f,256/256f);
+                    displayPatternButtons[index - 1].image.color = new Color(131 / 256f, 131 / 256f, 256 / 256f);
                     break;
             }
         });
@@ -350,14 +357,16 @@ public class HexagonMover : MonoBehaviour
             Hexagon hexagon = hit.collider.GetComponent<Hexagon>();
             if (hexagon != null)
             {
-                CaldronManager.Instance.water.DOColor(hexagon.color,0.5f);
-                CaldronManager.Instance.spiral.DOColor(hexagon.color,0.5f);
+                CaldronManager.Instance.water.DOColor(hexagon.color, 0.5f);
+                CaldronManager.Instance.spiral.DOColor(hexagon.color, 0.5f);
 
                 Debug.Log("Current hexagon color: " + hexagon.color);
 
                 //EndGame
                 if (IsOnRightSpot() == true)
                 {
+                    isMoving = false;
+                    moveQueue.Dequeue();
                     if (GameDataManager.Instance.playSound == 1)
                     {
                         GameObject sound = new GameObject("sound");
@@ -380,7 +389,7 @@ public class HexagonMover : MonoBehaviour
             if (hexagon != null)
             {
                 if (GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex == hexagon.index)
-                return true;
+                    return true;
             }
         }
         return false;
@@ -396,6 +405,7 @@ public class HexagonMover : MonoBehaviour
             UpdatePatternDisplayButtons();
         });
     }
+
     private void UpdatePatternDisplayButtons()
     {
         // Set all button colors to white
@@ -410,13 +420,13 @@ public class HexagonMover : MonoBehaviour
             switch (patternIndex)
             {
                 case 0:
-                    displayPatternButtons[i].image.color = new Color(256/256f, 131/256f,131/256f);
+                    displayPatternButtons[i].image.color = new Color(256 / 256f, 131 / 256f, 131 / 256f);
                     break;
                 case 1:
                     displayPatternButtons[i].image.color = new Color(110 / 256f, 218 / 256f, 140 / 256f);
                     break;
                 case 2:
-                    displayPatternButtons[i].image.color = new Color(131/256f, 131/256f,256/256f);
+                    displayPatternButtons[i].image.color = new Color(131 / 256f, 131 / 256f, 256 / 256f);
                     break;
             }
         }

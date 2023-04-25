@@ -19,7 +19,7 @@ public class GameDataManager : MonoBehaviour
     public int playSound;
     public int playMusic;
     public int playVibrate;
-    
+
     // Start is called before the first frame update
     private void Awake()
     {

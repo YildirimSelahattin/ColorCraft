@@ -43,18 +43,6 @@ public class ColorManager : MonoBehaviour
                     colorIndex = 2;
                     colorButton.GetComponent<Image>().color = new Color(131/256f, 131/256f,256/256f);
                     break;
-                case "yellow":
-                    colorIndex = 3;
-                    colorButton.GetComponent<Image>().color = Color.yellow;
-                    break;
-                case "turqouise":
-                    colorIndex = 4;
-                    colorButton.GetComponent<Image>().color = Color.cyan;
-                    break;
-                case "purple":
-                    colorIndex = 5;
-                    colorButton.GetComponent<Image>().color = Color.magenta;
-                    break;
             }
             Debug.Log(colorIndex);
             colorButton.transform.GetComponent<ColorButtonData>().numberText.text = colorAmount.ToString();

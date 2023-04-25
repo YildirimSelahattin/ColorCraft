@@ -162,7 +162,7 @@ public class ColorWheelController : MonoBehaviour
 
         foreach (GameObject hexagon in hexagonList)
         {
-            posZ -= 5f;
+            posZ -= 10f;
             StartCoroutine(ScaleHexagon(hexagon, scaleFactor, animationDuration, posZ));
             yield return new WaitForSeconds(delayBetweenHexagons);
             StartCoroutine(ScaleHexagon(hexagon, hexagonSize, animationDuration, posZ));

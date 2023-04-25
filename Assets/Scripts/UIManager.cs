@@ -62,7 +62,6 @@ public class UIManager : MonoBehaviour
         UIManager.goStartPage = false;
         GameDataManager.Instance.currentLevel++;
         SceneManager.LoadScene(0);
-        player.GetComponent<SpriteRenderer>().enabled = true;
         GameDataManager.Instance.SaveData();
     }
 

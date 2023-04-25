@@ -21,7 +21,6 @@ public class CameraController : MonoBehaviour
     {
         cam = GetComponent<Camera>();
         initialZoom = cam.orthographicSize;
-        initialPosition = transform.position;
         isDoubleTapped = false;
     }
 
@@ -33,7 +32,7 @@ public class CameraController : MonoBehaviour
             if (isDoubleTapped)
             {
                 cam.orthographicSize = initialZoom;
-                transform.position = initialPosition;
+                transform.position = new Vector3(player.gameObject.transform.position.x,player.gameObject.transform.position.y,transform.position.z);
                 isDoubleTapped = false;
             }
             else

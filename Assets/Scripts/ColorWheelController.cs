@@ -33,15 +33,6 @@ public class ColorWheelController : MonoBehaviour
         }
     }
 
-
-    public void StartCreatingEnvironment(int levelNumber)
-    {
-        if (GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].level.levelType == "hexagon")
-        {
-            CreateColorWheel();
-        }
-    }
-
     private void Update()
     {
         if (isFinished)
@@ -50,10 +41,40 @@ public class ColorWheelController : MonoBehaviour
         }
     }
 
+
+    public void StartCreatingEnvironment(int levelNumber)
+    {
+        if (GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].level.levelType == "hexagon")
+        {
+           ColorWheeManager();
+        }
+    }
+
+    public void ColorWheeManager()
+    {
+        int targetIndex = GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex;
+        Debug.Log("Target Index: " + targetIndex);
+        for (int i = 0; i < hexagonList.Count; i++)
+        {
+            hexagonList[i].GetComponent<Hexagon>().index = i;
+            if (i == targetIndex)
+            {
+                targetColor = hexagonList[i].GetComponent<SpriteRenderer>().color;
+                hexagonList[i].GetComponent<SpriteRenderer>().color = Color.white;
+                hexagonList[i].GetComponent<SpriteRenderer>().sprite = targetSpriteTexture;
+            }
+        }
+
+        targetImage.color = targetColor;
+        UIManager.Instance.winTargetImage.color = targetColor;
+    }
+
+
     private void CreateColorWheel()
     {
         int index = 0;
         int targetIndex = GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex;
+
         for (int ring = 0; ring < numberOfRings; ring++)
         {
             int hexagonsInRing = ring == 0 ? 1 : ring * 6;

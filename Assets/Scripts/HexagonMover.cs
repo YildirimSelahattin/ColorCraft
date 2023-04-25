@@ -365,8 +365,6 @@ public class HexagonMover : MonoBehaviour
                 //EndGame
                 if (IsOnRightSpot() == true)
                 {
-                    isMoving = false;
-                    moveQueue.Dequeue();
                     if (GameDataManager.Instance.playSound == 1)
                     {
                         GameObject sound = new GameObject("sound");
@@ -388,8 +386,13 @@ public class HexagonMover : MonoBehaviour
             Hexagon hexagon = hit.collider.GetComponent<Hexagon>();
             if (hexagon != null)
             {
+                Debug.Log("Hexxxxxxx: " + hexagon.index);
+                Debug.Log("Current Level: " + GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex);
                 if (GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex == hexagon.index)
+                {
+                    Debug.Log("Buraya girmiyorum");
                     return true;
+                }
             }
         }
         return false;

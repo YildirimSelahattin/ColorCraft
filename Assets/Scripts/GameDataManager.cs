@@ -10,7 +10,6 @@ public class GameDataManager : MonoBehaviour
     public int totalLevelNumber;
     public TextAsset JSONText;
     public int currentLevel = 0;
-    public int levelToLoad = 0;
     public AudioClip breakSound;
     public AudioClip crackSound;
     public AudioClip winSound;
@@ -39,8 +38,7 @@ public class GameDataManager : MonoBehaviour
         playSound = PlayerPrefs.GetInt("PlaySound", 1);
         playMusic = PlayerPrefs.GetInt("PlayMusic", 1);
         playVibrate = PlayerPrefs.GetInt("PlayVibrate", 1);
-        levelToLoad = PlayerPrefs.GetInt("levelToLoad", 1);
-        currentLevel = levelToLoad;
+        currentLevel = PlayerPrefs.GetInt("currentLevel", 1);
     }
 
     public void SaveData()
@@ -48,6 +46,6 @@ public class GameDataManager : MonoBehaviour
         PlayerPrefs.SetInt("PlaySound", playSound);
         PlayerPrefs.SetInt("PlayMusic", playMusic);
         PlayerPrefs.SetInt("PlayVibrate", playVibrate);
-        PlayerPrefs.SetInt("levelToLoad", levelToLoad);
+        PlayerPrefs.SetInt("currentLevel", currentLevel);
     }
 }

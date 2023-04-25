@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelUIManager : MonoBehaviour
 {
@@ -29,10 +30,10 @@ public class LevelUIManager : MonoBehaviour
         int temp = GameDataManager.Instance.totalLevelNumber;
         while (temp != 0)
         {
-            if (temp >= 9)
+            if (temp >= 15)
             {
-                temp -= 9;
-                howManyToAdd = 9;
+                temp -= 15;
+                howManyToAdd = 15;
             }
             else
             {
@@ -45,24 +46,28 @@ public class LevelUIManager : MonoBehaviour
             gridCounter++;
             for (int i = 0; i < howManyToAdd; i++)
             {
-                int index = (gridCounter - 1) * 9 + i + 1;
+                int index = (gridCounter - 1) * 15 + i + 1;
                 GameObject levelButton = Instantiate(levelButtonPrefab, grid.transform);
                 LevelButtonManager buttonScript = levelButton.GetComponent<LevelButtonManager>();
                 buttonScript.levelIndex = index;
-                buttonScript.levelNumberText.text = index.ToString();
+                if(index < 10)
+                {
+                    buttonScript.levelNumberText.text = "0"+index.ToString();
+                }
+                else
+                {
+                    buttonScript.levelNumberText.text = index.ToString();
+                }
+                
                 buttonScript.levelNumberText.color = colors[i%5];
 
                 if (index > GameDataManager.Instance.currentLevel)
                 {
-                    
+                    levelButton.GetComponent<Button>().interactable = false;
                 }
-                else if (index == GameDataManager.Instance.currentLevel)
+                else
                 {
-                  
-                }
-                else if (index < GameDataManager.Instance.currentLevel)
-                {
-                    
+                    levelButton.GetComponent<Button>().interactable = true;
                 }
             }
         }

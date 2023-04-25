@@ -196,15 +196,4 @@ public class UIManager : MonoBehaviour
              levelButton.SetActive(false);
          }
     }
-    
-    public void OpenLevelPanel()
-    {
-        levelSelectionScreen.SetActive(true);
-    }
-
-    public void CloseLevelPanel()
-    {
-        levelSelectionScreen.SetActive(false);
-        startScreen.SetActive(true);
-    }
 }

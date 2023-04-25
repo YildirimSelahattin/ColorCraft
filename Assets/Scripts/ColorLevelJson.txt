@@ -10,14 +10,6 @@
             {
             "colorName":"red",
             "amount":1
-            },
-            {
-            "colorName":"green",
-            "amount":1
-            },
-            {
-            "colorName":"blue",
-            "amount":1
             }
             ]
     },
@@ -26,23 +18,10 @@
             "levelType":"hexagon",
             "levelParametres":[5]
             },
-         "winIndex":37,
+         "winIndex":7,
          "colorsInLevel":[
             {
             "colorName":"red",
-            "amount":2
-            }
-            ]
-    },
-    {
-        "level":{
-            "levelType":"hexagon",
-            "levelParametres":[5]
-            },
-         "winIndex":11,
-         "colorsInLevel":[
-            {
-            "colorName":"green",
             "amount":1
             }
             ]
@@ -65,9 +44,12 @@
             "levelType":"hexagon",
             "levelParametres":[5]
             },
-         "winIndex":15,
+         "winIndex":17,
          "colorsInLevel":[
-          
+            {
+            "colorName":"red",
+            "amount":1
+            },
             {
             "colorName":"blue",
             "amount":1
@@ -79,11 +61,18 @@
             "levelType":"hexagon",
             "levelParametres":[5]
             },
-         "winIndex":53,
+         "winIndex":1,
          "colorsInLevel":[
-            
+            {
+            "colorName":"red",
+            "amount":2
+            },
             {
             "colorName":"blue",
+            "amount":2
+            },
+            {
+            "colorName":"green",
             "amount":2
             }
             ]
@@ -93,7 +82,63 @@
             "levelType":"hexagon",
             "levelParametres":[5]
             },
-         "winIndex":9,
+         "winIndex":51,
+         "colorsInLevel":[
+          
+            {
+            "colorName":"blue",
+            "amount":2
+            },
+            {
+            "colorName":"green",
+            "amount":1
+            }
+            ]
+    },
+    {
+        "level":{
+            "levelType":"hexagon",
+            "levelParametres":[5]
+            },
+         "winIndex":40,
+         "colorsInLevel":[
+            {
+            "colorName":"red",
+            "amount":2
+            },
+            {
+            "colorName":"green",
+            "amount":2
+            }
+            ]
+    },
+    {
+        "level":{
+            "levelType":"hexagon",
+            "levelParametres":[5]
+            },
+         "winIndex":158,
+         "colorsInLevel":[
+            {
+            "colorName":"red",
+            "amount":5
+            },
+            {
+            "colorName":"green",
+            "amount":5
+            },
+            {
+            "colorName":"blue",
+            "amount":5
+            }
+            ]
+    },
+    {
+        "level":{
+            "levelType":"hexagon",
+            "levelParametres":[5]
+            },
+         "winIndex":237,
          "colorsInLevel":[
             {
             "colorName":"red",
@@ -114,14 +159,42 @@
             "levelType":"hexagon",
             "levelParametres":[5]
             },
-         "winIndex":20,
+         "winIndex":342,
          "colorsInLevel":[
             {
             "colorName":"red",
-            "amount":2
+            "amount":5
+            },
+            {
+            "colorName":"green",
+            "amount":5
+            },
+            {
+            "colorName":"blue",
+            "amount":5
+            }
+            ]
+    },
+    {
+        "level":{
+            "levelType":"hexagon",
+            "levelParametres":[5]
+            },
+         "winIndex":362,
+         "colorsInLevel":[
+            {
+            "colorName":"red",
+            "amount":5
+            },
+            {
+            "colorName":"green",
+            "amount":5
+            },
+            {
+            "colorName":"blue",
+            "amount":5
             }
             ]
     }
-
     ]
 }

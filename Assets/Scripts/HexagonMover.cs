@@ -192,11 +192,7 @@ public class HexagonMover : MonoBehaviour
     }
     private void EnqueueDirections(Vector3[] directions, int patternIndex, Button pressedButton)
     {
-        if (patternIndices.Count >= 3)
-        {
-            Debug.Log("Pattern limit reached.");
-            return;
-        }
+        
         if (patternIndices.Count < 3)
         {
             patternIndices.Add(patternIndex);
@@ -416,7 +412,7 @@ public class HexagonMover : MonoBehaviour
     }
     public void EnqueueRedMoves()
     {
-        if (isMoving || ColorManager.Instance.sideButtonArray[0].GetComponent<ColorButtonData>().colorAmount < 1)
+        if (isMoving || ColorManager.Instance.sideButtonArray[0].GetComponent<ColorButtonData>().colorAmount < 1 || patternIndices.Count >= 3)
         {
             return;
         }
@@ -441,7 +437,7 @@ public class HexagonMover : MonoBehaviour
     }
     public void EnqueueGreenMoves()
     {
-        if (isMoving || ColorManager.Instance.sideButtonArray[1].GetComponent<ColorButtonData>().colorAmount < 0)
+        if (isMoving || ColorManager.Instance.sideButtonArray[1].GetComponent<ColorButtonData>().colorAmount < 0 || patternIndices.Count >= 3)
         {
             return;
         }
@@ -464,7 +460,7 @@ public class HexagonMover : MonoBehaviour
     }
     public void EnqueueBlueMoves()
     {
-        if (isMoving || ColorManager.Instance.sideButtonArray[2].GetComponent<ColorButtonData>().colorAmount < 0)
+        if (isMoving || ColorManager.Instance.sideButtonArray[2].GetComponent<ColorButtonData>().colorAmount < 0 || patternIndices.Count >= 3)
         {
             return;
         }

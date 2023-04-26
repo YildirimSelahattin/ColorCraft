@@ -10,7 +10,7 @@ public class GameDataManager : MonoBehaviour
     public int totalLevelNumber;
     public TextAsset JSONText;
     public int currentLevel = 0;
-    public int loadLevel = 0;
+    public int highestLevel = 0;
     public AudioClip colorSelectSound;
     public AudioClip colorDeselectSound;
     public AudioClip winSound;
@@ -40,7 +40,7 @@ public class GameDataManager : MonoBehaviour
         playMusic = PlayerPrefs.GetInt("PlayMusic", 1);
         playVibrate = PlayerPrefs.GetInt("PlayVibrate", 1);
         currentLevel = PlayerPrefs.GetInt("currentLevel", 1);
-        loadLevel = currentLevel;
+        highestLevel = PlayerPrefs.GetInt("highestLevel", 1);
     }
 
     public void SaveData()
@@ -48,8 +48,9 @@ public class GameDataManager : MonoBehaviour
         PlayerPrefs.SetInt("PlaySound", playSound);
         PlayerPrefs.SetInt("PlayMusic", playMusic);
         PlayerPrefs.SetInt("PlayVibrate", playVibrate);
-        if(loadLevel > currentLevel)
+        if(currentLevel > highestLevel)
         {
+            PlayerPrefs.SetInt("highestLevel", highestLevel);
             PlayerPrefs.SetInt("currentLevel", currentLevel);
         }
     }

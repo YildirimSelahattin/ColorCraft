@@ -11,6 +11,7 @@ public class ColorWheelController : MonoBehaviour
     public int numberOfRings = 0;
     public float hexagonSize = 1f;
     public Image targetImage;
+    public Image winTargetImage;
     public List<GameObject> hexagonList;
     public GameObject textPrefab;
     public bool isFinished = false;
@@ -25,6 +26,7 @@ public class ColorWheelController : MonoBehaviour
         {
             Instance = this;
         }
+        Debug.Log(loadDeckDirectly);
         if (loadDeckDirectly)
         {
             StartCreatingEnvironment(GameDataManager.Instance.currentLevel);
@@ -65,7 +67,7 @@ public class ColorWheelController : MonoBehaviour
         }
 
         targetImage.color = targetColor;
-        UIManager.Instance.winTargetImage.color = targetColor;
+        winTargetImage.color = targetColor;
     }
 
 
@@ -100,7 +102,7 @@ public class ColorWheelController : MonoBehaviour
             }
         }
         targetImage.color = targetColor;
-        UIManager.Instance.winTargetImage.color = targetColor;
+        winTargetImage.color = targetColor;
     }
 
 

@@ -373,6 +373,7 @@ public class HexagonMover : MonoBehaviour
                 //EndGame
                 if (IsOnRightSpot() == true)
                 {
+                    UIManager.Instance.winScreen.SetActive(true);
                     BGBlack.SetActive(true);
                     if (GameDataManager.Instance.playSound == 1)
                     {
@@ -380,7 +381,6 @@ public class HexagonMover : MonoBehaviour
                         sound.AddComponent<AudioSource>().PlayOneShot(GameDataManager.Instance.winSound);
                         Destroy(sound, GameDataManager.Instance.winSound.length); // Creates new object, add to it audio source, play sound, destroy this object after playing is done
                     }
-                    UIManager.Instance.winScreen.SetActive(true);
                     ColorWheelController.Instance.isFinished = true;
                     UIManager.Instance.player.GetComponent<SpriteRenderer>().enabled = false;
                     lineRenderer.gameObject.SetActive(false);

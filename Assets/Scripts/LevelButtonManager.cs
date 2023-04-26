@@ -12,7 +12,6 @@ public class LevelButtonManager : MonoBehaviour
 
     public void OnButtonClicked()
     {
-        SceneManager.LoadScene(0);
         GameDataManager.Instance.currentLevel = levelIndex;
         ColorWheelController.Instance.StartCreatingEnvironment(levelIndex);
         UIManager.Instance.levelSelectionScreen.SetActive(false);

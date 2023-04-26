@@ -18,7 +18,6 @@ public class UIManager : MonoBehaviour
     public GameObject startButton;
     public GameObject optionButton;
     public GameObject levelButton;
-    public Image winTargetImage;
     public Button musicOn;
     public Button musicOff;
     public Button soundOn;
@@ -58,21 +57,25 @@ public class UIManager : MonoBehaviour
         ColorWheelController.loadDeckDirectly = true;
         UIManager.goStartPage = false;
         GameDataManager.Instance.currentLevel++;
-        SceneManager.LoadScene(0);
+        if(GameDataManager.Instance.currentLevel > GameDataManager.Instance.highestLevel)
+            GameDataManager.Instance.highestLevel = GameDataManager.Instance.currentLevel;
         GameDataManager.Instance.SaveData();
         PlayUISound();
+        SceneManager.LoadScene(0); 
     }
 
     public void RestartLevel()
     {
+        ColorWheelController.loadDeckDirectly = true;
+        UIManager.goStartPage = false;
         SceneManager.LoadScene(0);
-        player.GetComponent<SpriteRenderer>().enabled = true;
         PlayUISound();
     }
 
     public void OnStartButtonClicked()
     {
-        ColorWheelController.Instance.StartCreatingEnvironment(GameDataManager.Instance.currentLevel);
+        GameDataManager.Instance.currentLevel = GameDataManager.Instance.highestLevel;
+        ColorWheelController.Instance.StartCreatingEnvironment(GameDataManager.Instance.highestLevel);
         StartInGameLevelUI();
         player.GetComponent<SpriteRenderer>().enabled = true;
         PlayUISound();
@@ -80,12 +83,10 @@ public class UIManager : MonoBehaviour
 
     public void HomeButton()
     {
-        SceneManager.LoadScene(0);
-        startScreen.SetActive(true);
-        inGameScreen.SetActive(false);
-        winScreen.SetActive(false);
-        player.GetComponent<SpriteRenderer>().enabled = false;
         PlayUISound();
+        ColorWheelController.loadDeckDirectly = false;
+        goStartPage = true;
+        SceneManager.LoadScene(0);
     }
 
     public void StartInGameLevelUI()

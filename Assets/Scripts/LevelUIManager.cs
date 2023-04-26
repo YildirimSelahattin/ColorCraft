@@ -44,9 +44,9 @@ public class LevelUIManager : MonoBehaviour
             grid.transform.localPosition = new Vector3(0, -gridWidth * gridCounter, 0);
             gridList.Add(grid);
             gridCounter++;
-            for (int i = 0; i < howManyToAdd; i++)
+            for (int i = 1; i < howManyToAdd; i++)
             {
-                int index = (gridCounter - 1) * 15 + i + 1;
+                int index = (gridCounter - 1) * 15 + i;
                 GameObject levelButton = Instantiate(levelButtonPrefab, grid.transform);
                 LevelButtonManager buttonScript = levelButton.GetComponent<LevelButtonManager>();
                 buttonScript.levelIndex = index;

@@ -54,4 +54,5 @@ public class ColorManager : MonoBehaviour
         }
         HexagonMover.Instance.StartFunctions();
     }
+    
 }

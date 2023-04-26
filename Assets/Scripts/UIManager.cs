@@ -27,6 +27,7 @@ public class UIManager : MonoBehaviour
     int isMusicOn;
     int isVibrateOn;
     public GameObject tutorialHand;
+    public GameObject blendColorsButton;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,7 +46,16 @@ public class UIManager : MonoBehaviour
         {
             StartInGameLevelUI();
             player.GetComponent<SpriteRenderer>().enabled = true;
+            if (GameDataManager.Instance.currentLevel < 5)
+            {
+                if (PlayerPrefs.GetInt("haveEverPlayedLevel" + GameDataManager.Instance.currentLevel, 0) == 0)
+                {
+                    StartCoroutine(OpenTutorialHand());
+                }
+            }
+
         }
+
 
         UpdateSound();
         UpdateMusic();
@@ -59,7 +69,12 @@ public class UIManager : MonoBehaviour
         GameDataManager.Instance.currentLevel++;
         if(GameDataManager.Instance.currentLevel > GameDataManager.Instance.highestLevel)
             GameDataManager.Instance.highestLevel = GameDataManager.Instance.currentLevel;
+        if (GameDataManager.Instance.currentLevel < 5)
+        {
+            PlayerPrefs.SetInt("haveEverPlayedLevel" + GameDataManager.Instance.currentLevel, 1);
+        }
         GameDataManager.Instance.SaveData();
+        SceneManager.LoadScene(0);
         PlayUISound();
         SceneManager.LoadScene(0); 
     }
@@ -79,8 +94,20 @@ public class UIManager : MonoBehaviour
         StartInGameLevelUI();
         player.GetComponent<SpriteRenderer>().enabled = true;
         PlayUISound();
-    }
 
+        if (GameDataManager.Instance.currentLevel < 5)
+        {
+            if (PlayerPrefs.GetInt("haveEverPlayedLevel" + GameDataManager.Instance.currentLevel, 0) == 0)
+            {
+                StartCoroutine(OpenTutorialHand());
+            }
+        }
+    }
+    public IEnumerator OpenTutorialHand()
+    {
+        yield return new WaitForEndOfFrame();
+        tutorialHand.SetActive(true);
+    }
     public void HomeButton()
     {
         PlayUISound();

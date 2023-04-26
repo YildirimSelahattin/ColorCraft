@@ -108,7 +108,7 @@ public class HexagonMover : MonoBehaviour
         {
             return;
         }
-        
+
         isMoving = true;
         Vector3 direction = moveQueue.Dequeue();
         Vector3 startPosition = transform.position;
@@ -146,7 +146,7 @@ public class HexagonMover : MonoBehaviour
         if (isMouseDownOnStartPattern == true && !isMoving)
         {
             isMoving = true;
-            
+
             MoveToNextHexagon();
         }
         else
@@ -198,7 +198,7 @@ public class HexagonMover : MonoBehaviour
             remainingPatternMoveCount--;
         }
     }
-    
+
     private void EnqueueDirections(Vector3[] directions, int patternIndex, Button pressedButton)
     {
         if (patternIndices.Count < 3)
@@ -356,7 +356,15 @@ public class HexagonMover : MonoBehaviour
         if (hit.collider != null)
         {
             Hexagon hexagon = hit.collider.GetComponent<Hexagon>();
-            hexagon.transform.DORotate(new Vector3(0,180,0),1f,RotateMode.FastBeyond360);
+            hexagon.transform.DORotate(new Vector3(0, 180, 0), 1f, RotateMode.FastBeyond360);
+
+            if (GameDataManager.Instance.playSound == 1)
+            {
+                GameObject sound = new GameObject("sound");
+                sound.AddComponent<AudioSource>().PlayOneShot(GameDataManager.Instance.blenderSound);
+                Destroy(sound, GameDataManager.Instance.blenderSound.length); // Creates new object, add to it audio source, play sound, destroy this object after playing is done
+            }
+
             if (hexagon != null)
             {
                 CaldronManager.Instance.water.DOColor(hexagon.color, 0.5f);

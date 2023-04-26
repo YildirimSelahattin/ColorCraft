@@ -20,12 +20,14 @@ public class Hexagon : MonoBehaviour
     }
 
     // Tıklandığında komşuları konsola yazdırmak için yeni işlev
+    /*
     private void OnMouseDown()
     {
         Debug.Log("Tıklanan Hexagon: " + transform.position);
         foreach (Hexagon neighbor in neighbors)
         {
-            Debug.Log("Komşu Hexagon: " + neighbor.transform.position);
+            Debug.Log("Komsu Hexagon: " + neighbor.transform.position);
         }
     }
+    */
 }

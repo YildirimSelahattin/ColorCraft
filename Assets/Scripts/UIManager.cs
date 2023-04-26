@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour
     int isSoundOn;
     int isMusicOn;
     int isVibrateOn;
-
+    public GameObject tutorialHand;
     // Start is called before the first frame update
     void Start()
     {

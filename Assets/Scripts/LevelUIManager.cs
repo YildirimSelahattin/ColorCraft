@@ -61,7 +61,7 @@ public class LevelUIManager : MonoBehaviour
                 
                 buttonScript.levelNumberText.color = colors[i%5];
 
-                if (index > GameDataManager.Instance.currentLevel)
+                if (index > GameDataManager.Instance.highestLevel)
                 {
                     levelButton.GetComponent<Button>().interactable = false;
                 }

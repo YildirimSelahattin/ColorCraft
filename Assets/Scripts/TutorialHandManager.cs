@@ -55,7 +55,7 @@ public class TutorialHandManager : MonoBehaviour
     public void MoveToButtons(int buttonIndex)
     {
         Vector3 targetPosition = ColorManager.Instance.sideButtonArray[buttonIndex].transform.position;
-        targetPosition = new Vector3(targetPosition.x, targetPosition.y - 200,targetPosition.z);
+        targetPosition = new Vector3(targetPosition.x + 30, targetPosition.y - 230,targetPosition.z);
         transform.DOMove(targetPosition, 0.5f).OnComplete(() =>
         {
             PressLoop();
@@ -65,7 +65,7 @@ public class TutorialHandManager : MonoBehaviour
     public void MoveToBlenderButton()
     {
         Vector3 targetPosition = UIManager.Instance.blendColorsButton.transform.position;
-        targetPosition = new Vector3(targetPosition.x, targetPosition.y - 200, targetPosition.z);
+        targetPosition = new Vector3(targetPosition.x + 30, targetPosition.y - 230, targetPosition.z);
         transform.DOMove(targetPosition, 0.5f).OnComplete(() =>
         {
             transform.DOKill();

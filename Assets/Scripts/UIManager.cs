@@ -48,8 +48,10 @@ public class UIManager : MonoBehaviour
             player.GetComponent<SpriteRenderer>().enabled = true;
             if (GameDataManager.Instance.currentLevel < 5)
             {
+                Debug.Log("A");
                 if (PlayerPrefs.GetInt("haveEverPlayedLevel" + GameDataManager.Instance.currentLevel, 0) == 0)
                 {
+                    Debug.Log("B");
                     StartCoroutine(OpenTutorialHand());
                 }
             }
@@ -66,13 +68,14 @@ public class UIManager : MonoBehaviour
     {
         ColorWheelController.loadDeckDirectly = true;
         UIManager.goStartPage = false;
-        GameDataManager.Instance.currentLevel++;
-        if(GameDataManager.Instance.currentLevel > GameDataManager.Instance.highestLevel)
-            GameDataManager.Instance.highestLevel = GameDataManager.Instance.currentLevel;
         if (GameDataManager.Instance.currentLevel < 5)
         {
             PlayerPrefs.SetInt("haveEverPlayedLevel" + GameDataManager.Instance.currentLevel, 1);
         }
+        GameDataManager.Instance.currentLevel++;
+        if(GameDataManager.Instance.currentLevel > GameDataManager.Instance.highestLevel)
+            GameDataManager.Instance.highestLevel = GameDataManager.Instance.currentLevel;
+        
         GameDataManager.Instance.SaveData();
         SceneManager.LoadScene(0);
         PlayUISound();

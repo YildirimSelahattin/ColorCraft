@@ -48,10 +48,7 @@ public class GameDataManager : MonoBehaviour
         PlayerPrefs.SetInt("PlaySound", playSound);
         PlayerPrefs.SetInt("PlayMusic", playMusic);
         PlayerPrefs.SetInt("PlayVibrate", playVibrate);
-        if(currentLevel > highestLevel)
-        {
-            PlayerPrefs.SetInt("highestLevel", highestLevel);
-            PlayerPrefs.SetInt("currentLevel", currentLevel);
-        }
+        PlayerPrefs.SetInt("currentLevel", currentLevel);
+        PlayerPrefs.SetInt("highestLevel", highestLevel);
     }
 }

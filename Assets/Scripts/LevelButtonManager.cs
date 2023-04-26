@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LevelButtonManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class LevelButtonManager : MonoBehaviour
 
     public void OnButtonClicked()
     {
+        SceneManager.LoadScene(0);
         GameDataManager.Instance.currentLevel = levelIndex;
         ColorWheelController.Instance.StartCreatingEnvironment(levelIndex);
         UIManager.Instance.levelSelectionScreen.SetActive(false);

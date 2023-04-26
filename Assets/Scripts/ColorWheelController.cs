@@ -53,7 +53,6 @@ public class ColorWheelController : MonoBehaviour
     public void ColorWheeManager()
     {
         int targetIndex = GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex;
-        Debug.Log("Target Index: " + targetIndex);
         for (int i = 0; i < hexagonList.Count; i++)
         {
             hexagonList[i].GetComponent<Hexagon>().index = i;

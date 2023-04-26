@@ -19,7 +19,6 @@ public class UIManager : MonoBehaviour
     public GameObject optionButton;
     public GameObject levelButton;
     public Image winTargetImage;
-
     public Button musicOn;
     public Button musicOff;
     public Button soundOn;
@@ -81,6 +80,7 @@ public class UIManager : MonoBehaviour
 
     public void HomeButton()
     {
+        SceneManager.LoadScene(0);
         startScreen.SetActive(true);
         inGameScreen.SetActive(false);
         winScreen.SetActive(false);

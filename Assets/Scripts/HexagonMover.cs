@@ -22,6 +22,7 @@ public class HexagonMover : MonoBehaviour
 
     private bool isButtonPressed = false;
     public Button patternButton;
+    public GameObject BGBlack;
 
     private void Awake()
     {
@@ -107,6 +108,7 @@ public class HexagonMover : MonoBehaviour
         {
             return;
         }
+        
         isMoving = true;
         Vector3 direction = moveQueue.Dequeue();
         Vector3 startPosition = transform.position;
@@ -134,7 +136,7 @@ public class HexagonMover : MonoBehaviour
             {
                 isMoving = false;
             }
-        }).SetEase(Ease.Linear);
+        }).SetEase(Ease.InOutQuad);
     }
 
     public void OnStartPatternButtonPress()
@@ -199,7 +201,6 @@ public class HexagonMover : MonoBehaviour
     
     private void EnqueueDirections(Vector3[] directions, int patternIndex, Button pressedButton)
     {
-
         if (patternIndices.Count < 3)
         {
             patternIndices.Add(patternIndex);
@@ -355,16 +356,16 @@ public class HexagonMover : MonoBehaviour
         if (hit.collider != null)
         {
             Hexagon hexagon = hit.collider.GetComponent<Hexagon>();
+            hexagon.transform.DORotate(new Vector3(0,180,0),1f,RotateMode.FastBeyond360);
             if (hexagon != null)
             {
                 CaldronManager.Instance.water.DOColor(hexagon.color, 0.5f);
                 CaldronManager.Instance.spiral.DOColor(hexagon.color, 0.5f);
 
-                Debug.Log("Current hexagon color: " + hexagon.color);
-
                 //EndGame
                 if (IsOnRightSpot() == true)
                 {
+                    BGBlack.SetActive(true);
                     if (GameDataManager.Instance.playSound == 1)
                     {
                         GameObject sound = new GameObject("sound");
@@ -373,6 +374,8 @@ public class HexagonMover : MonoBehaviour
                     }
                     UIManager.Instance.winScreen.SetActive(true);
                     ColorWheelController.Instance.isFinished = true;
+                    UIManager.Instance.player.GetComponent<SpriteRenderer>().enabled = false;
+                    lineRenderer.gameObject.SetActive(false);
                     return;
                 }
             }
@@ -386,11 +389,8 @@ public class HexagonMover : MonoBehaviour
             Hexagon hexagon = hit.collider.GetComponent<Hexagon>();
             if (hexagon != null)
             {
-                Debug.Log("Hexxxxxxx: " + hexagon.index);
-                Debug.Log("Current Level: " + GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex);
                 if (GameDataManager.Instance.rawData.levelsArray[GameDataManager.Instance.currentLevel].winIndex == hexagon.index)
                 {
-                    Debug.Log("Buraya girmiyorum");
                     return true;
                 }
             }

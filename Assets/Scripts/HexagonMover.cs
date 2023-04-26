@@ -444,6 +444,25 @@ public class HexagonMover : MonoBehaviour
     }
     public void EnqueueRedMoves()
     {
+        if (UIManager.Instance.tutorialHand.active)
+        {
+            if (GameDataManager.Instance.currentLevel == 1)
+            {
+                UIManager.Instance.tutorialHand.GetComponent<TutorialHandManager>().MoveToBlenderButton();
+            }
+            if (GameDataManager.Instance.currentLevel == 3)
+            {
+                UIManager.Instance.tutorialHand.GetComponent<TutorialHandManager>().MoveToButtons(2);
+            }
+            if (GameDataManager.Instance.currentLevel == 4)
+            {
+                UIManager.Instance.tutorialHand.GetComponent<TutorialHandManager>().redPushCount++;
+                if(UIManager.Instance.tutorialHand.GetComponent<TutorialHandManager>().redPushCount == 2)
+                {
+                    UIManager.Instance.tutorialHand.GetComponent<TutorialHandManager>().MoveToBlenderButton();
+                }
+            }
+        }
         if (isMoving || ColorManager.Instance.sideButtonArray[0].GetComponent<ColorButtonData>().colorAmount < 1 || patternIndices.Count >= 3)
         {
             return;
@@ -475,6 +494,17 @@ public class HexagonMover : MonoBehaviour
     }
     public void EnqueueGreenMoves()
     {
+        if (UIManager.Instance.tutorialHand.active)
+        {
+            if (GameDataManager.Instance.currentLevel == 2)
+            {
+                UIManager.Instance.tutorialHand.GetComponent<TutorialHandManager>().greenPushCount++;
+                if (UIManager.Instance.tutorialHand.GetComponent<TutorialHandManager>().greenPushCount ==2)
+                {
+                    UIManager.Instance.tutorialHand.GetComponent<TutorialHandManager>().MoveToBlenderButton();
+                }
+            }
+        }
         if (isMoving || ColorManager.Instance.sideButtonArray[1].GetComponent<ColorButtonData>().colorAmount < 0 || patternIndices.Count >= 3)
         {
             return;
@@ -505,10 +535,19 @@ public class HexagonMover : MonoBehaviour
     }
     public void EnqueueBlueMoves()
     {
+        if (UIManager.Instance.tutorialHand.active)
+        {
+
+            if (GameDataManager.Instance.currentLevel == 3)
+            {
+                UIManager.Instance.tutorialHand.GetComponent<TutorialHandManager>().MoveToBlenderButton();
+            }
+        }
         if (isMoving || ColorManager.Instance.sideButtonArray[2].GetComponent<ColorButtonData>().colorAmount < 0 || patternIndices.Count >= 3)
         {
             return;
         }
+    
         else
         {
             if (GameDataManager.Instance.playSound == 1)

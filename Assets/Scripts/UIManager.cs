@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
     int isVibrateOn;
     public GameObject tutorialHand;
     public GameObject blendColorsButton;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,21 +49,16 @@ public class UIManager : MonoBehaviour
             player.GetComponent<SpriteRenderer>().enabled = true;
             if (GameDataManager.Instance.currentLevel < 5)
             {
-                Debug.Log("A");
                 if (PlayerPrefs.GetInt("haveEverPlayedLevel" + GameDataManager.Instance.currentLevel, 0) == 0)
                 {
                     Debug.Log("B");
                     StartCoroutine(OpenTutorialHand());
                 }
             }
-
         }
-
-
         UpdateSound();
         UpdateMusic();
     }
-
 
     public void NextLevel()
     {
@@ -106,11 +102,13 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+
     public IEnumerator OpenTutorialHand()
     {
         yield return new WaitForEndOfFrame();
         tutorialHand.SetActive(true);
     }
+
     public void HomeButton()
     {
         PlayUISound();
@@ -156,6 +154,7 @@ public class UIManager : MonoBehaviour
             SoundsOn();
         }
     }
+
     public void UpdateMusic()
     {
         isMusicOn = GameDataManager.Instance.playMusic;
@@ -241,6 +240,7 @@ public class UIManager : MonoBehaviour
         }
         PlayUISound();
     }
+    
     public void PlayUISound()
     {
         if (GameDataManager.Instance.playSound == 1)

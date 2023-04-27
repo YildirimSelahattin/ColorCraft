@@ -13,6 +13,7 @@ public class ColorManager : MonoBehaviour
     public GameObject[] sideButtonArray = new GameObject[5];
     public GameObject[] movingColorArray = new GameObject[5];
     public static ColorManager Instance;
+    
     private void Start()
     {
         if(Instance == null)
@@ -54,5 +55,4 @@ public class ColorManager : MonoBehaviour
         }
         HexagonMover.Instance.StartFunctions();
     }
-    
 }

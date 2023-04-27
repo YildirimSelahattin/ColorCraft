@@ -19,7 +19,6 @@ public class TutorialHandManager : MonoBehaviour
         {
             MoveToButtons(0);
         }
-
         if (GameDataManager.Instance.currentLevel == 2)
         {
             MoveToButtons(1);
@@ -34,17 +33,10 @@ public class TutorialHandManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void PressLoop()
     {
-
         transform.DOScale(originalScale * 0.7f, 0.3f).OnComplete(() =>
         {
-
             transform.DOScale(originalScale, 0.3f).OnComplete(() =>
             {
                 PressLoop();

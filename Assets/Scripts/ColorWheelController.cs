@@ -26,7 +26,7 @@ public class ColorWheelController : MonoBehaviour
         {
             Instance = this;
         }
-        Debug.Log(loadDeckDirectly);
+
         if (loadDeckDirectly)
         {
             StartCreatingEnvironment(GameDataManager.Instance.currentLevel);
@@ -42,7 +42,6 @@ public class ColorWheelController : MonoBehaviour
             StartCoroutine(AnimateHexagons());
         }
     }
-
 
     public void StartCreatingEnvironment(int levelNumber)
     {
@@ -65,11 +64,9 @@ public class ColorWheelController : MonoBehaviour
                 hexagonList[i].GetComponent<SpriteRenderer>().sprite = targetSpriteTexture;
             }
         }
-
         targetImage.color = targetColor;
         winTargetImage.color = targetColor;
     }
-
 
     private void CreateColorWheel()
     {
@@ -82,7 +79,6 @@ public class ColorWheelController : MonoBehaviour
 
             for (int i = 0; i < hexagonsInRing; i++)
             {
-
                 GameObject hexagon = Instantiate(hexagonPrefab);
                 hexagon.transform.SetParent(transform);
                 hexagon.transform.localPosition = CalculateHexagonPosition(ring, i);

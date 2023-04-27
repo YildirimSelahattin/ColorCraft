@@ -13,7 +13,7 @@ public class ColorManager : MonoBehaviour
     public GameObject[] sideButtonArray = new GameObject[5];
     public GameObject[] movingColorArray = new GameObject[5];
     public static ColorManager Instance;
-    
+
     private void Start()
     {
         if(Instance == null)
@@ -45,7 +45,6 @@ public class ColorManager : MonoBehaviour
                     colorButton.GetComponent<Image>().color = new Color(131/256f, 131/256f,256/256f);
                     break;
             }
-            Debug.Log(colorIndex);
             colorButton.transform.GetComponent<ColorButtonData>().numberText.text = colorAmount.ToString();
             movingColorArray[colorIndex] = movingColor;
             colorButton.GetComponent<ColorButtonData>().colorIndex= colorIndex;

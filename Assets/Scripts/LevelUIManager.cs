@@ -16,13 +16,13 @@ public class LevelUIManager : MonoBehaviour
         new Color32 (131, 180, 255, 255),
         new Color32 (110, 218, 140, 255),
         new Color32 (255, 183, 117, 255)};
-    
+
     // Start is called before the first frame update
     void Start()
     {
         CreateLevelPanels();
     }
-    
+
     public void CreateLevelPanels()
     {
         int gridCounter = 0;
@@ -30,10 +30,10 @@ public class LevelUIManager : MonoBehaviour
         int temp = GameDataManager.Instance.totalLevelNumber;
         while (temp != 0)
         {
-            if (temp >= 15)
+            if (temp >= 16)
             {
-                temp -= 15;
-                howManyToAdd = 15;
+                temp -= 16;
+                howManyToAdd = 16;
             }
             else
             {
@@ -46,20 +46,20 @@ public class LevelUIManager : MonoBehaviour
             gridCounter++;
             for (int i = 1; i < howManyToAdd; i++)
             {
-                int index = (gridCounter - 1) * 15 + i;
+                int index = (gridCounter - 1) * 16 + i;
                 GameObject levelButton = Instantiate(levelButtonPrefab, grid.transform);
                 LevelButtonManager buttonScript = levelButton.GetComponent<LevelButtonManager>();
                 buttonScript.levelIndex = index;
-                if(index < 10)
+                if (index < 10)
                 {
-                    buttonScript.levelNumberText.text = "0"+index.ToString();
+                    buttonScript.levelNumberText.text = "0" + index.ToString();
                 }
                 else
                 {
                     buttonScript.levelNumberText.text = index.ToString();
                 }
-                
-                buttonScript.levelNumberText.color = colors[i%5];
+
+                buttonScript.levelNumberText.color = colors[i % 5];
 
                 if (index > GameDataManager.Instance.highestLevel)
                 {

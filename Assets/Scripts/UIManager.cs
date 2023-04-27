@@ -32,8 +32,6 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(GameDataManager.Instance.currentLevel);
-        Debug.Log(GameDataManager.Instance.totalLevelNumber);
         if (Instance == null)
         {
             Instance = this;
@@ -53,7 +51,6 @@ public class UIManager : MonoBehaviour
             {
                 if (PlayerPrefs.GetInt("haveEverPlayedLevel" + GameDataManager.Instance.currentLevel, 0) == 0)
                 {
-                    Debug.Log("B");
                     StartCoroutine(OpenTutorialHand());
                 }
             }
@@ -74,20 +71,20 @@ public class UIManager : MonoBehaviour
 
         GameDataManager.Instance.currentLevel++;
 
-        if(GameDataManager.Instance.currentLevel == GameDataManager.Instance.totalLevelNumber)
+        if (GameDataManager.Instance.currentLevel == GameDataManager.Instance.totalLevelNumber)
         {
             GameDataManager.Instance.currentLevel = 1;
         }
-        
-        if(GameDataManager.Instance.currentLevel > GameDataManager.Instance.highestLevel)
+
+        if (GameDataManager.Instance.currentLevel > GameDataManager.Instance.highestLevel)
         {
             GameDataManager.Instance.highestLevel = GameDataManager.Instance.currentLevel;
         }
-        
+
         GameDataManager.Instance.SaveData();
         SceneManager.LoadScene(0);
         PlayUISound();
-        SceneManager.LoadScene(0); 
+        SceneManager.LoadScene(0);
     }
 
     public void RestartLevel()

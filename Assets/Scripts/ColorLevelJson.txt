@@ -16,7 +16,7 @@
     {
         "level":{
             "levelType":"hexagon",
-            "levelParametres":[5]
+            "levelParametres":[1]
             },
          "winIndex":7,
          "colorsInLevel":[
@@ -29,7 +29,7 @@
     {
         "level":{
             "levelType":"hexagon",
-            "levelParametres":[5]
+            "levelParametres":[2]
             },
          "winIndex":45,
          "colorsInLevel":[
@@ -42,7 +42,7 @@
     {
         "level":{
             "levelType":"hexagon",
-            "levelParametres":[5]
+            "levelParametres":[3]
             },
          "winIndex":17,
          "colorsInLevel":[
@@ -59,7 +59,7 @@
     {
         "level":{
             "levelType":"hexagon",
-            "levelParametres":[5]
+            "levelParametres":[4]
             },
          "winIndex":1,
          "colorsInLevel":[
@@ -98,7 +98,7 @@
     {
         "level":{
             "levelType":"hexagon",
-            "levelParametres":[5]
+            "levelParametres":[6]
             },
          "winIndex":40,
          "colorsInLevel":[
@@ -115,7 +115,71 @@
     {
         "level":{
             "levelType":"hexagon",
-            "levelParametres":[5]
+            "levelParametres":[7]
+            },
+         "winIndex":5,
+         "colorsInLevel":[
+            {
+            "colorName":"red",
+            "amount":3
+            },
+            {
+            "colorName":"green",
+            "amount":1
+            },
+            {
+            "colorName":"blue",
+            "amount":2
+            }
+            ]
+    },
+    {
+        "level":{
+            "levelType":"hexagon",
+            "levelParametres":[8]
+            },
+         "winIndex":28,
+         "colorsInLevel":[
+            {
+            "colorName":"red",
+            "amount":3
+            },
+            {
+            "colorName":"green",
+            "amount":5
+            },
+            {
+            "colorName":"blue",
+            "amount":3
+            }
+            ]
+    },
+    {
+        "level":{
+            "levelType":"hexagon",
+            "levelParametres":[9]
+            },
+         "winIndex":59,
+         "colorsInLevel":[
+          
+            {
+            "colorName":"red",
+            "amount":5
+            },
+            {
+            "colorName":"green",
+            "amount":1
+            },
+            {
+            "colorName":"blue",
+            "amount":3
+            }
+            ]
+    },
+    {
+        "level":{
+            "levelType":"hexagon",
+            "levelParametres":[10]
             },
          "winIndex":158,
          "colorsInLevel":[
@@ -136,7 +200,7 @@
     {
         "level":{
             "levelType":"hexagon",
-            "levelParametres":[5]
+            "levelParametres":[11]
             },
          "winIndex":237,
          "colorsInLevel":[
@@ -157,7 +221,7 @@
     {
         "level":{
             "levelType":"hexagon",
-            "levelParametres":[5]
+            "levelParametres":[12]
             },
          "winIndex":342,
          "colorsInLevel":[
@@ -178,7 +242,7 @@
     {
         "level":{
             "levelType":"hexagon",
-            "levelParametres":[5]
+            "levelParametres":[13]
             },
          "winIndex":362,
          "colorsInLevel":[
@@ -193,6 +257,48 @@
             {
             "colorName":"blue",
             "amount":7
+            }
+            ]
+    },
+    {
+        "level":{
+            "levelType":"hexagon",
+            "levelParametres":[14]
+            },
+         "winIndex":685,
+         "colorsInLevel":[
+            {
+            "colorName":"red",
+            "amount":12
+            },
+            {
+            "colorName":"green",
+            "amount":12
+            },
+            {
+            "colorName":"blue",
+            "amount":12
+            }
+            ]
+    },
+    {
+        "level":{
+            "levelType":"hexagon",
+            "levelParametres":[15]
+            },
+         "winIndex":824,
+         "colorsInLevel":[
+            {
+            "colorName":"red",
+            "amount":15
+            },
+            {
+            "colorName":"green",
+            "amount":15
+            },
+            {
+            "colorName":"blue",
+            "amount":15
             }
             ]
     }

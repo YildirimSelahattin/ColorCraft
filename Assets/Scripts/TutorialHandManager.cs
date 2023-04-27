@@ -10,12 +10,12 @@ public class TutorialHandManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        originalScale =transform.localScale;
+        originalScale = transform.localScale;
     }
 
     private void OnEnable()
     {
-        if(GameDataManager.Instance.currentLevel == 1)
+        if (GameDataManager.Instance.currentLevel == 1)
         {
             MoveToButtons(0);
         }
@@ -47,7 +47,7 @@ public class TutorialHandManager : MonoBehaviour
     public void MoveToButtons(int buttonIndex)
     {
         Vector3 targetPosition = ColorManager.Instance.sideButtonArray[buttonIndex].transform.position;
-        targetPosition = new Vector3(targetPosition.x + 30, targetPosition.y - 230,targetPosition.z);
+        targetPosition = new Vector3(targetPosition.x + 30, targetPosition.y - 230, targetPosition.z);
         transform.DOMove(targetPosition, 0.5f).OnComplete(() =>
         {
             PressLoop();

@@ -5,7 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class DataList
 {
-
     [System.Serializable]
     public class LevelTypeData
     {

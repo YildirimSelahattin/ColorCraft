@@ -32,6 +32,8 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log(GameDataManager.Instance.currentLevel);
+        Debug.Log(GameDataManager.Instance.totalLevelNumber);
         if (Instance == null)
         {
             Instance = this;
@@ -64,13 +66,23 @@ public class UIManager : MonoBehaviour
     {
         ColorWheelController.loadDeckDirectly = true;
         UIManager.goStartPage = false;
+
         if (GameDataManager.Instance.currentLevel < 5)
         {
             PlayerPrefs.SetInt("haveEverPlayedLevel" + GameDataManager.Instance.currentLevel, 1);
         }
+
         GameDataManager.Instance.currentLevel++;
+
+        if(GameDataManager.Instance.currentLevel == GameDataManager.Instance.totalLevelNumber)
+        {
+            GameDataManager.Instance.currentLevel = 1;
+        }
+        
         if(GameDataManager.Instance.currentLevel > GameDataManager.Instance.highestLevel)
+        {
             GameDataManager.Instance.highestLevel = GameDataManager.Instance.currentLevel;
+        }
         
         GameDataManager.Instance.SaveData();
         SceneManager.LoadScene(0);
@@ -240,7 +252,7 @@ public class UIManager : MonoBehaviour
         }
         PlayUISound();
     }
-    
+
     public void PlayUISound()
     {
         if (GameDataManager.Instance.playSound == 1)

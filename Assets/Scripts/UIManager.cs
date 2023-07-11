@@ -82,16 +82,16 @@ public class UIManager : MonoBehaviour
         }
 
         GameDataManager.Instance.SaveData();
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
         PlayUISound();
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
     public void RestartLevel()
     {
         ColorWheelController.loadDeckDirectly = true;
         UIManager.goStartPage = false;
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
         PlayUISound();
     }
 
@@ -123,7 +123,7 @@ public class UIManager : MonoBehaviour
         PlayUISound();
         ColorWheelController.loadDeckDirectly = false;
         goStartPage = true;
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
     public void StartInGameLevelUI()
